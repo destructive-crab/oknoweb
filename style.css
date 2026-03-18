@@ -1,0 +1,7 @@
+@font-face {
+    font-family: MS Gothic; 
+    src: url('fonts/msgothic.ttf') format('truetype');
+}
+body {
+    font-family: MS Gothic;
+}

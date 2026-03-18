@@ -1,0 +1,8 @@
+@font-face {
+    font-family: MS Gothic; 
+    src: url('fonts/msgothic.ttf') format('truetype');
+}
+
+p {
+  font-family: ; /* use font */
+}
