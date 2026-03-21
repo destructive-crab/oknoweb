@@ -35,23 +35,29 @@ public sealed class VersionsService : IVersionsService
 
         return infos.ToArray();
     }
-
+    
     public async Task<VersionInfo> GetVersion(string id)
     {
-        using SqliteConnection connection = new SqliteConnection($"Data Source={Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/dev/test.db");
-        
+        using SqliteConnection connection = new SqliteConnection($"Data Source={Config.DatabasePath}");
+
         await connection.OpenAsync();
 
-        using SqliteCommand command = connection.CreateCommand();
+        using SqliteCommand command = new SqliteCommand($"SELECT * FROM main WHERE id = '{id}'", connection);
         
-        command.CommandText = $"SELECT * FROM main WHERE id = {id}";
-        
-        using SqliteDataReader reader = command.ExecuteReader();
+        using SqliteDataReader reader = await command.ExecuteReaderAsync();
+        await reader.ReadAsync();
 
-        return new VersionInfo(reader["id"] as string,
+        return new VersionInfo(
+            reader["id"] as string,
             reader["path"] as string,
             reader["changelog"] as string,
             reader["release_date"] as string);
     }
+    
+    public async Task<FileStream> GetVersionFile(string versionId)
+    {
+        VersionInfo info = await GetVersion(versionId);
 
+        return new FileStream(info.Path, FileMode.Open, FileAccess.Read);
+    }
 }

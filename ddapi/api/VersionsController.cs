@@ -14,7 +14,7 @@ public sealed class VersionsController : ControllerBase
     }
 
     [HttpGet("all")]
-    public async Task<IActionResult> GetVersions()
+    public async Task<IActionResult> GetVersionsInfo()
     {
         try
         {
@@ -30,7 +30,7 @@ public sealed class VersionsController : ControllerBase
     }
 
     [HttpGet("{versionID}")]
-    public async Task<IActionResult> GetVersion(string versionID)
+    public async Task<IActionResult> GetVersionInfo(string versionID)
     {
         try
         {
@@ -39,6 +39,21 @@ public sealed class VersionsController : ControllerBase
             VersionInfo ver = await VersionsService.GetVersion(versionID);
 
             return Ok(ver);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"Failed getting version: {versionID}");
+        }
+    }
+
+    [HttpGet("download/{versionID}")]
+    public async Task<IActionResult> DownloadVersion(string versionID)
+    {
+        try
+        {
+            FileStream stream = await VersionsService.GetVersionFile(versionID);
+            return File(stream, "versions/zip", $"Deadays_{versionID}.zip");
         }
         catch (Exception e)
         {
