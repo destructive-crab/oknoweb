@@ -7,6 +7,8 @@ public sealed class Config : IConfig
     public const string CONFIG_PATH = "/home/destructive_crab/dev/okno/web/oknoweb/ddapi/config";
     
     public string IDColumn          => "id";
+    public string NameColumn        => "name";
+    public string TagColumn         => "tag";
     public string PathColumn        => "path";
     public string ChangelogColumn   => "changelog";
     public string ReleaseDateColumn => "release_date";
@@ -26,7 +28,7 @@ public sealed class Config : IConfig
         DatabasePath    = Path.Combine(RootPath, "database.db");
         ArchiveMainPath = Path.Combine(RootPath, "versions_archive", "main");
         ArchiveModsPath = Path.Combine(RootPath, "versions_archive", "mods");
-
+        
         ValidatePath(RootPath);
         ValidatePath(DatabasePath);
         ValidatePath(ArchiveMainPath);

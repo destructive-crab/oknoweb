@@ -1,37 +1,27 @@
 namespace api.Services;
 
-public sealed class VersionsService : IVersionsService
+public sealed class VersionsStorage : IVersionsStorage
 {
     private readonly IConfig Config;
 
     public IDatabaseWriter Writer { get; set; }
     public IDatabaseReader Reader { get; set; }
 
-    public VersionsService(IConfig config, IDatabaseReader reader, IDatabaseWriter writer)
+    public VersionsStorage(IConfig config, IDatabaseReader reader, IDatabaseWriter writer)
     {
         Config = config;
         Reader = reader;
         Writer = writer;
     }
- 
-    public async Task<VersionInfo[]> GetVersions()
-    {
-        return await Reader.ReadAllVersionsInfo();
-    }
-
-    public async Task<VersionInfo> GetVersion(string id)
-    {
-        return await Reader.ReadVersionInfo(id);
-    }
 
     public async Task<FileStream> GetVersionFile(string versionId)
     {
-        VersionInfo info = await GetVersion(versionId);
+        VersionInfo info = await Reader.ReadVersionInfo(versionId);
 
         return new FileStream(info.Path, FileMode.Open, FileAccess.Read);
     }
 
-    public async Task<bool> SaveOnDiskAndRegister(IFormFile formFile, string id, string changelog)
+    public async Task<string?> WriteVersionOnDisk(IFormFile formFile, string id, string tag)
     {
         try
         {
@@ -42,16 +32,12 @@ public sealed class VersionsService : IVersionsService
                 await formFile.CopyToAsync(stream);
             }
             
-            VersionInfo info = new(id, path, changelog, DateTime.Today.Date.ToString());
-
-            await Writer.RegisterVersion(info);
-            
-            return true;
+            return path;
         }
         catch (Exception ex)
         {
             Console.WriteLine("Failed writing file on disk: {0}", ex);
-            return false;
+            return null;
         }
     }
 }

@@ -11,7 +11,7 @@ public static class DDAPI
         builder.Services.AddScoped<IConfig,          Config>();
         builder.Services.AddScoped<IDatabaseReader,  DatabaseController>();
         builder.Services.AddScoped<IDatabaseWriter,  DatabaseController>();
-        builder.Services.AddScoped<IVersionsService, VersionsService>();
+        builder.Services.AddScoped<IVersionsStorage, VersionsStorage>();
         
         builder.Services
             .AddControllers()
