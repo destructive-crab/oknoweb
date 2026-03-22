@@ -1,6 +1,7 @@
 using api.Services;
 using Microsoft.AspNetCore.Authentication;
 using api.Services.Auth;
+using api.Controllers;
 
 public static class DDAPI
 {

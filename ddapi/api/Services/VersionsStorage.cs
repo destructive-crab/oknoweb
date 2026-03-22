@@ -40,4 +40,16 @@ public sealed class VersionsStorage : IVersionsStorage
             return null;
         }
     }
+
+    public async Task DeleteVersionFile(string id)
+    {
+	VersionInfo info = await Reader.ReadVersionInfo(id);
+
+	if(info == null)
+	{
+	    return;
+	}
+	
+	File.Delete(info.Path);		
+    }
 }
