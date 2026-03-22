@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using api.Services;
 
@@ -58,7 +59,7 @@ public sealed class VersionsController : ControllerBase
         {
             Console.WriteLine($"{versionID} file request");
             FileStream stream = await Storage.GetVersionFile(versionID);
-            return File(stream, "zip", $"Deadays_{versionID}.zip");
+            return File(stream, "application/zip", $"Deadays_{versionID}.zip");
         }
         catch (Exception e)
         {
