@@ -4,7 +4,7 @@ using api.Services;
 namespace api.Controllers;
 
 [ApiController]
-[Route("api/")]
+[Route("versions")]
 public sealed class VersionsController : ControllerBase
 {
     private readonly IVersionsStorage Storage;
@@ -16,7 +16,7 @@ public sealed class VersionsController : ControllerBase
         Reader = reader;
     }
 
-    [HttpGet("versions")]
+    [HttpGet("")]
     public async Task<IActionResult> GetVersionsInfo()
     {
         try
@@ -40,7 +40,7 @@ public sealed class VersionsController : ControllerBase
     }
 
 
-    [HttpGet("versions/{versionID}")]
+    [HttpGet("{versionID}")]
     public async Task<IActionResult> GetVersionInfo(string versionID)
     {
         try

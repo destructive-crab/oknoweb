@@ -4,7 +4,7 @@ using api.Services;
 
 [ApiController]
 [Authorize]
-[Route("panel")]
+[Route("versions")]
 public sealed class PanelController : ControllerBase
 {
     private readonly IVersionsStorage Storage;
@@ -18,15 +18,15 @@ public sealed class PanelController : ControllerBase
 	    Reader  = reader;
     }
 
-    [HttpPost("versions/{versionID}/id")]
+    [HttpPost("{versionID}/id")]
     public async Task<IActionResult> EditVersionID(string versionID, string newVersionID)
         => await EditVersion(versionID, (i) => i.PublicInfo.ID = newVersionID);
     
-    [HttpPost("versions/{versionID}/name")]
+    [HttpPost("{versionID}/name")]
     public async Task<IActionResult> EditVersionName(string versionID, string newName)
         => await EditVersion(versionID, (i) => i.PublicInfo.Name = newName);
 
-    [HttpPost("versions/{versionID}/tag")]
+    [HttpPost("{versionID}/tag")]
     public async Task<IActionResult> EditVersionTag(string versionID, string newTag)
         => await EditVersion(versionID, (i) => i.PublicInfo.Tag = newTag);
 
@@ -59,7 +59,7 @@ public sealed class PanelController : ControllerBase
         }
     }
 
-    [HttpPost("versions/{versionID}")]
+    [HttpPost("{versionID}")]
     public async Task<IActionResult> PostVersion(string versionID, string name, string tag, IFormFile file, string changelog)
     {
         if (!file.FileName.EndsWith(".zip") && !file.FileName.EndsWith(".tar.gz"))
@@ -82,7 +82,7 @@ public sealed class PanelController : ControllerBase
         }
     }
     
-    [HttpDelete("versions/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteVersion(string id)
     {
         try
