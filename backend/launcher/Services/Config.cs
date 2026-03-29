@@ -1,4 +1,5 @@
 using System.Text.Json;
+using api.Debug;
 
 namespace api.Services;
 
@@ -18,7 +19,7 @@ public sealed class Config : IConfig
 
     private readonly string RootPath;
 
-    public Config()
+    public Config(ILocalLogger logger)
     {
         RootPath        = File.ReadAllText(CONFIG_PATH);
         RootPath        = RootPath.Replace("\n", "");
@@ -26,15 +27,15 @@ public sealed class Config : IConfig
         DatabasePath       = Path.Combine(RootPath, "database.db");
         VersionArchivePath = Path.Combine(RootPath, "versions_archive");
         
-        ValidatePath(RootPath);
-        ValidatePath(DatabasePath);
+        ValidatePath(RootPath, logger);
+        ValidatePath(DatabasePath, logger);
     }
 
-    private void ValidatePath(string path)
+    private void ValidatePath(string path, ILocalLogger logger)
     {
         if (!Path.Exists(path))
         {
-            Console.WriteLine($"Invalid path: {JsonSerializer.Serialize(path)}");
+            logger.Error($"Invalid path: {JsonSerializer.Serialize(path)}");
         }
     }
 }

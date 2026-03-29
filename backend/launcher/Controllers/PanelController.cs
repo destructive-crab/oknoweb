@@ -1,3 +1,4 @@
+using api.Debug;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using api.Services;
@@ -8,14 +9,16 @@ using api.Services;
 public sealed class PanelController : ControllerBase
 {
     private readonly IVersionsStorage Storage;
-    private readonly IDatabaseWriter Writer;
-    private readonly IDatabaseReader Reader;
+    private readonly IDatabaseWriter  Writer;
+    private readonly IDatabaseReader  Reader;
+    private readonly ILocalLogger     Logger;
 
-    public PanelController(IVersionsStorage storage, IDatabaseWriter writer, IDatabaseReader reader)
+    public PanelController(IVersionsStorage storage, IDatabaseWriter writer, IDatabaseReader reader, ILocalLogger logger)
     {
 	    Storage = storage;
 	    Writer  = writer;
 	    Reader  = reader;
+        Logger  = logger;
     }
 
     [HttpPost("{versionID}/id")]
@@ -54,7 +57,7 @@ public sealed class PanelController : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Logger.Error(e);
             return StatusCode(500, "Failed uploading new version file");
         }
     }
@@ -77,7 +80,7 @@ public sealed class PanelController : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Failed uploading version: {e}");
+            Logger.Error($"Failed uploading version: {e}");
             return StatusCode(500, $"Failed uploading version: {e}");
         }
     }
@@ -94,7 +97,7 @@ public sealed class PanelController : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Failed deleting {id}  " + e.ToString());
+            Logger.Error($"Failed deleting {id}  " + e.ToString());
             return StatusCode(500, $"Failed deleting version: {e}");
         }
     }
@@ -113,7 +116,8 @@ public sealed class PanelController : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Failed editing version: {e}");
+            Logger.Error($"Failed editing version: {e}");
+            
             return StatusCode(500, $"Failed editing version: {e}");
         }
     }

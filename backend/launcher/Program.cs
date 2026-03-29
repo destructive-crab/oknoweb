@@ -1,8 +1,8 @@
-using System.Runtime.InteropServices;
 using api.Services;
 using Microsoft.AspNetCore.Authentication;
 using api.Services.Auth;
 using api.Controllers;
+using api.Debug;
 
 public static class DDAPI
 {
@@ -11,6 +11,10 @@ public static class DDAPI
         var builder = WebApplication.CreateBuilder();
         
         builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 200 * 1024 * 1024);
+        
+        Console.WriteLine(Directory.GetCurrentDirectory());
+
+        builder.Services.AddSingleton<ILocalLogger,     LocalLogger>();
         
         builder.Services.AddSingleton<IConfig,          Config>();
         builder.Services.AddSingleton<IDatabaseReader,  DatabaseController>();
@@ -22,15 +26,15 @@ public static class DDAPI
             .AddApplicationPart(typeof(VersionsController).Assembly);
 
 
-	builder.Services.AddAuthentication("PanelAuthentication")
-	    .AddScheme<AuthenticationSchemeOptions, PanelAuthenticationHandler>("PanelAuthentication", null);
+		builder.Services.AddAuthentication("PanelAuthentication")
+		    .AddScheme<AuthenticationSchemeOptions, PanelAuthenticationHandler>("PanelAuthentication", null);
 
-	builder.Services.AddAuthorization();
+		builder.Services.AddAuthorization();
 		
         WebApplication app = builder.Build();
 
-	app.UseAuthentication();
-	app.UseAuthorization();
+		app.UseAuthentication();
+		app.UseAuthorization();
 	
         app.MapControllers();
 	

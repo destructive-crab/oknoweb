@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Services;
+using api.Debug;
 
 namespace api.Controllers;
 
@@ -10,10 +11,13 @@ public sealed class VersionsController : ControllerBase
     private readonly IVersionsStorage Storage;
     private readonly IDatabaseReader  Reader;
     
-    public VersionsController(IVersionsStorage storage, IDatabaseReader reader)
+    private readonly ILocalLogger     Logger;
+
+    public VersionsController(IVersionsStorage storage, IDatabaseReader reader, ILocalLogger logger)
     {
         Storage = storage;
         Reader = reader;
+        Logger = logger;
     }
 
     [HttpGet("")]
@@ -21,6 +25,8 @@ public sealed class VersionsController : ControllerBase
     {
         try
         {
+            Logger.Message($"Versions requested");
+            
             LocalVersionInfo[]  vis         = await Reader.ReadAllVersionsInfo();
             PublicVersionInfo[] pubVersions = new PublicVersionInfo[vis.Length];
 
@@ -29,13 +35,14 @@ public sealed class VersionsController : ControllerBase
                 pubVersions[i] = vis[i].PublicInfo;
             }
 
-            Console.WriteLine($"Versions requested. Sending {vis.Length} versions info");
+            Logger.Message($"Sending {vis.Length} versions info");
+            
             return Ok(pubVersions);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return StatusCode(500, "Failed gettings versions");
+            Logger.Error(e);
+            return StatusCode(500, "Failed getting versions");
         }
     }
 
@@ -45,7 +52,7 @@ public sealed class VersionsController : ControllerBase
     {
         try
         {
-            Console.WriteLine($"Version {versionID} requested");
+            Logger.Message($"Version {versionID} requested");
             
             PublicVersionInfo ver = (await Reader.ReadVersionInfo(versionID)).PublicInfo;
 
@@ -53,7 +60,7 @@ public sealed class VersionsController : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Logger.Error(e);
             return StatusCode(500, $"Failed getting version: {versionID}");
         }
     }
@@ -63,13 +70,14 @@ public sealed class VersionsController : ControllerBase
     {
         try
         {
-            Console.WriteLine($"{versionID} file request");
+            Logger.Message($"{versionID} file request");
+            
             FileStream stream = await Storage.GetVersionFile(versionID);
             return File(stream, "application/zip", $"Deadays_{versionID}.zip");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Logger.Error(e);
             return StatusCode(500, $"Failed getting version: {versionID}");
         }
     }
