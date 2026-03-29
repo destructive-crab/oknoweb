@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json;
 using api.Debug;
 
@@ -5,7 +6,7 @@ namespace api.Services;
 
 public sealed class Config : IConfig
 {
-    public string CONFIG_PATH => Path.Combine(Directory.GetCurrentDirectory(), "config");
+    public string CONFIG_PATH => Path.Combine(Utils.GetConfigDirectory(), "config");
     
     public string IDColumn          => "id";
     public string NameColumn        => "name";

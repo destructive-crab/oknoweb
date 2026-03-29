@@ -12,8 +12,6 @@ public static class DDAPI
         
         builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 200 * 1024 * 1024);
         
-        Console.WriteLine(Directory.GetCurrentDirectory());
-
         builder.Services.AddSingleton<ILocalLogger,     LocalLogger>();
         
         builder.Services.AddSingleton<IConfig,          Config>();

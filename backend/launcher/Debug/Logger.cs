@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 
 namespace api.Debug;
@@ -10,7 +11,7 @@ public interface ILocalLogger
 
 public sealed class LocalLogger : ILocalLogger
 {
-    private string LogFilePath => Path.Combine(Directory.GetCurrentDirectory(), "app.log");
+    private string LogFilePath => Path.Combine(Utils.GetConfigDirectory(), "app.log");
     
     private const string MESSAGE_PREFIX = "[INFO}";
     private const string ERROR_PREFIX   = "[ERROR}";
