@@ -28,10 +28,10 @@ public sealed class LocalLogger : ILocalLogger
         {
             if (!File.Exists(LogFilePath))
             {
-                File.Create(LogFilePath);
+                File.Create(LogFilePath).Close();
             }
             
-            entry = DateTime.Now + " " + entry;
+            entry = DateTime.Now + " " + entry + "\n";
 
             await File.AppendAllTextAsync(LogFilePath, entry, Encoding.UTF8);
         }
