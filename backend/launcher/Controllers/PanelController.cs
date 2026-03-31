@@ -42,17 +42,17 @@ public sealed class PanelController : ControllerBase
     {
         try
         {
-            bool valid = await Reader.ValidateVersionID(versionID);
-
-            if (!valid)
+            LocalVersionInfo? info = await Reader.ReadVersionInfo(versionID);
+            
+            if (info == null)
             {
-                return StatusCode(400, "Invalid id");
+                return StatusCode(400, $"Invalid ID {versionID}");
             }
+            
+            info.Path = await Storage.WriteVersionOnDisk(file, versionID, info.PublicInfo.Tag);
 
-            LocalVersionInfo info = await Reader.ReadVersionInfo(versionID);
-        
-            await Storage.WriteVersionOnDisk(file, versionID, info.PublicInfo.Tag);
-
+            await Writer.EditVersion(versionID, info);
+            
             return Ok();
         }
         catch (Exception e)
@@ -67,11 +67,23 @@ public sealed class PanelController : ControllerBase
     {
         if (!file.FileName.EndsWith(".zip") && !file.FileName.EndsWith(".tar.gz"))
         {
-            return StatusCode(500, $"Invalid file extension");
+            return StatusCode(400, $"Invalid file extension {file.FileName}");
         }
 
         try
         {
+            LocalVersionInfo? versionInfo = await Reader.ReadVersionInfo(versionID);
+            if (versionInfo != null)
+            {
+                versionInfo.PublicInfo.Name      = name;
+                versionInfo.PublicInfo.Tag       = tag;
+                versionInfo.PublicInfo.Changelog = changelog;
+
+                
+                
+                return Ok();
+            }
+            
             string path = await Storage.WriteVersionOnDisk(file, versionID, tag);
 
             Writer.RegisterVersion(new LocalVersionInfo(new(versionID, name, tag, changelog, DateTime.Today.Date.ToString()),  path));
@@ -97,7 +109,7 @@ public sealed class PanelController : ControllerBase
         }
         catch (Exception e)
         {
-            Logger.Error($"Failed deleting {id}  " + e.ToString());
+            Logger.Error($"Failed deleting {id} " + e);
             return StatusCode(500, $"Failed deleting version: {e}");
         }
     }
@@ -106,11 +118,16 @@ public sealed class PanelController : ControllerBase
     {
         try
         {
-            LocalVersionInfo info = await Reader.ReadVersionInfo(versionID);
+            LocalVersionInfo? info = await Reader.ReadVersionInfo(versionID);
+
+            if (info == null)
+            {
+                return StatusCode(400, $"Invalid ID: {versionID}");    
+            }
             
             editInfo.Invoke(info);
             
-            await Writer.EditVersion(versionID, info);
+            await Writer.EditVersion(info.PublicInfo.ID, info);
             
             return Ok();
         }

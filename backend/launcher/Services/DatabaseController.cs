@@ -38,7 +38,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 	    }	
     }
 
-    public async Task<bool> ValidateVersionID(string id)
+    public async Task<bool> HasVersion(string id)
     {
         await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.DatabasePath}"))
         {
@@ -54,7 +54,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         }
     }
 
-    public async Task<LocalVersionInfo> ReadVersionInfo(string id)
+    public async Task<LocalVersionInfo?> ReadVersionInfo(string id)
     {
         await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.DatabasePath}"))
         {
@@ -72,7 +72,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
                     }
                     else
                     {
-                        throw new ArgumentException("Invalid ID");
+                        return null;
                     }
                 }   
             }

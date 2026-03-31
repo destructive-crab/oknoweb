@@ -21,7 +21,7 @@ public sealed class VersionsStorage : IVersionsStorage
         return new FileStream(info.Path, FileMode.Open, FileAccess.Read);
     }
 
-    public async Task<string?> WriteVersionOnDisk(IFormFile formFile, string id, string tag)
+    public async Task<string> WriteVersionOnDisk(IFormFile formFile, string id, string tag)
     {
         try
         {

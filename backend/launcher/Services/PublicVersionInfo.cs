@@ -4,7 +4,7 @@ namespace api.Services;
 public sealed class LocalVersionInfo
 {
     public PublicVersionInfo PublicInfo { get; private set; }
-    public string            Path       { get; private set; }
+    public string            Path       { get; set; }
 
     public LocalVersionInfo(PublicVersionInfo publicInfo, string path)
     {
