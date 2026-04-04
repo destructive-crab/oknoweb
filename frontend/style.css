@@ -1,7 +1,92 @@
 @font-face {
     font-family: MS Gothic; 
     src: url('fonts/msgothic.ttf') format('truetype');
+	font-display: swap; /* Improves perceived performance */
 }
+div{
+  text-align:justify;
+  letter-spacing: 1px;
+}
+/* Set default spacing for everything */
+* {
+    letter-spacing: 0.02em;  /* Your desired Latin spacing */
+}
+/* Set default spacing for everything */
+* {
+    letter-spacing: 0.02em;  /* Your desired Latin spacing */
+}
+/* Target a specific language or use a class */
+:lang(ru) {
+    letter-spacing: -7px; /* Adjust this value until it matches */
+}
+
+/* Target a specific language or use a class */
+:lang(en) {
+    letter-spacing: 1px; /* Adjust this value until it matches */
+}
+
 body {
     font-family: MS Gothic;
+	text-align:justify;
+	letter-spacing: 1px;
 }
+.icon-demo {
+	font-size: 24px;
+	margin: 10px;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+/* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+  float: left;
+  width: 30%;
+  padding: 1px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.button {
+  border: 2px solid #000555;
+  background-color: #ffffff;  
+  color: #000555;
+  padding: 8px 64px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 32px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 350px; 
+  height: 60px;
+  button:hover {
+        background-color: #0056b3;  /* Darker on hover */
+        border-color: #000555;
+  }
+}
+.button-row {
+	display: flex;
+	justify-content: center;  /* Centers the row */
+	gap: 10px;
+}
+/* Base class for all Nerd Font icons */
+.nf {
+	font-family: 'MS Gothic', monospace;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+@import "https://www.nerdfonts.com/assets/css/webfont.css"
