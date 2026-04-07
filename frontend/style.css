@@ -11,13 +11,40 @@ div{
 body {
     font-family: '0xProto';
     letter-spacing: 1px;
+    margin: 0;
+    background-color: #ffffff;
+}
+
+.page-frame {
+    width: 92vw;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2vw;
+    background-color: #ffffff;
+    border-left: 0.35vw solid #000555;
+    border-right: 0.35vw solid #000555;
+    box-sizing: border-box;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.5vw;
+}
+
+.community-description {
+    flex: 1;
+    color: #000555;
 }
 
 .logo {
     display: block;
     margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+    margin-right: 0;
+    width: 30%;
+    min-width: 180px;
+    max-width: 340px;
 }
 
 .button {
@@ -72,4 +99,33 @@ body {
 h1{
     padding: 5px;
     margin: 0px;
+}
+
+@media (max-width: 900px) {
+    .page-frame {
+        width: 96vw;
+        padding: 3vw;
+        border-left-width: 0.5vw;
+        border-right-width: 0.5vw;
+    }
+
+    .top-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3vw;
+    }
+
+    .logo {
+        order: -1;
+        margin: 0 auto;
+        width: 45%;
+        min-width: 150px;
+    }
+
+    .community-description {
+        order: 0;
+        text-align: center;
+        width: 100%;
+    }
 }
