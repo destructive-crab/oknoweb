@@ -102,7 +102,7 @@ public sealed class VersionsController : ControllerBase
             Logger.Message($"{versionID} with additional tag {additionalTag} file request");
             
             FileStream stream = await getFile(versionID);
-            
+            Writer.IncreaseDownloadsCount(versionID);
             return File(stream, "application/zip", $"Deadays_{versionID}_{additionalTag}.zip");
         }
         catch (Exception e)

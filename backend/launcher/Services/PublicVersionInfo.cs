@@ -5,9 +5,9 @@ public sealed class LocalVersionInfo
 {
     public PublicVersionInfo PublicInfo     { get; private set; }
     
-    public string            WindowsZipPath { get; set; }
-    public string            LinuxZipPath   { get; set; }
 
+    public string            WindowsZipPath { get; set; } = "none";
+    public string            LinuxZipPath   { get; set; } = "none";
     public LocalVersionInfo(PublicVersionInfo publicInfo, string windowsPath, string linuxPath)
     {
         PublicInfo = publicInfo;

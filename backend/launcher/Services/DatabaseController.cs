@@ -10,7 +10,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 
     private LocalVersionInfo CreateInfoFromReader(SqliteDataReader reader)
     {
-        return new LocalVersionInfo(
+        var info =  new LocalVersionInfo(
             new(reader[Config.IDColumn]          as string,
                 reader[Config.NameColumn]        as string,
                 reader[Config.TagColumn]         as string,
@@ -19,6 +19,21 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
             reader[Config.WindowsPathColumn] as string,
             reader[Config.LinuxPathColumn]   as string
             );
+
+        //hardcoded stuff
+        //need to setup all api and server domain in config
+
+        if (info.LinuxZipPath != "none")
+        {
+            info.PublicInfo.DownloadWindowsURL = $"https://oknoweb.ru/api/versions/files/windows/{info.PublicInfo.ID}";
+        }
+
+        if (info.LinuxZipPath != "none")
+        {
+            info.PublicInfo.DownloadLinuxURL   = $"https://oknoweb.ru/api/versions/files/linux/{info.PublicInfo.ID}";
+            
+        }
+        return info;
     }
 
     public DatabaseController(IConfig config, ILocalLogger logger)
