@@ -20,8 +20,8 @@ public sealed class LocalVersionInfo
 [Serializable]
 public sealed class PublicVersionInfo
 {
-    public string DownloadWindowsURL { get; set; }
-    public string DownloadLinuxURL   { get; set; }
+    public string DownloadWindowsURL { get; set; }= "none";
+    public string DownloadLinuxURL   { get; set; }= "none";
     
     public string ID          { get; set; }
 
