@@ -14,14 +14,21 @@ public sealed class VersionsStorage : IVersionsStorage
         Writer = writer;
     }
 
-    public async Task<FileStream> GetVersionFile(string versionId)
+    public async Task<FileStream> GetWindowsVersionFile(string versionId)
     {
         LocalVersionInfo info = await Reader.ReadVersionInfo(versionId);
 
-        return new FileStream(info.Path, FileMode.Open, FileAccess.Read);
+        return new FileStream(info.WindowsZipPath, FileMode.Open, FileAccess.Read);
     }
+    
+    public async Task<FileStream> GetLinuxVersionFile(string versionId)
+    {
+        LocalVersionInfo info = await Reader.ReadVersionInfo(versionId);
 
-    public async Task<string> WriteVersionOnDisk(IFormFile formFile, string id, string tag)
+        return new FileStream(info.LinuxZipPath, FileMode.Open, FileAccess.Read);
+    }
+    
+    public async Task<string> WriteVersionOnDisk(IFormFile formFile, string fileName, string tag)
     {
         try
         {
@@ -32,7 +39,7 @@ public sealed class VersionsStorage : IVersionsStorage
                 Directory.CreateDirectory(dir);
             }
             
-            string path = Path.Combine(dir, id + ".zip");
+            string path = Path.Combine(dir, fileName + ".zip");
 
             if (File.Exists(path))
             {
@@ -62,7 +69,8 @@ public sealed class VersionsStorage : IVersionsStorage
 	        return;
 	    }
 	    
-	    File.Delete(info.Path);
+	    File.Delete(info.WindowsZipPath);
+	    File.Delete(info.LinuxZipPath);
         
         //we actually can check if tag directory is empty now and delete it too
     }

@@ -10,14 +10,16 @@ public sealed class VersionsController : ControllerBase
 {
     private readonly IVersionsStorage Storage;
     private readonly IDatabaseReader  Reader;
+    private readonly IDatabaseWriter  Writer;
     
     private readonly ILocalLogger     Logger;
 
-    public VersionsController(IVersionsStorage storage, IDatabaseReader reader, ILocalLogger logger)
+    public VersionsController(IVersionsStorage storage, IDatabaseReader reader, IDatabaseWriter writer, ILocalLogger logger)
     {
         Storage = storage;
-        Reader = reader;
-        Logger = logger;
+        Reader  = reader;
+        Writer  = writer;
+        Logger  = logger;
     }
 
     [HttpGet("")]
@@ -46,7 +48,29 @@ public sealed class VersionsController : ControllerBase
         }
     }
 
+    [HttpGet("totaldownloads")]
+    public async Task<IActionResult> GetTotalDownloads()
+    {
+        try
+        {
+            LocalVersionInfo[] vis = await Reader.ReadAllVersionsInfo();
 
+            int totalDownloads = 0;
+            
+            for (int i = 0; i < vis.Length; i++)
+            {
+                totalDownloads += vis[i].PublicInfo.Downloads;
+            }
+
+            return Ok(totalDownloads);
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e);
+            return StatusCode(500, "Failed getting total downloads");
+        }
+    }
+    
     [HttpGet("{versionID}")]
     public async Task<IActionResult> GetVersionInfo(string versionID)
     {
@@ -65,20 +89,26 @@ public sealed class VersionsController : ControllerBase
         }
     }
 
-    [HttpGet("files/{versionID}")]
-    public async Task<IActionResult> DownloadVersion(string versionID)
+    [HttpGet("files/windows/{versionID}")]
+    public async Task<IActionResult> DownloadVersionWindows(string versionID) => await DownloadVersion(Storage.GetWindowsVersionFile, versionID, "win");
+
+    [HttpGet("files/linux/{versionID}")]
+    public async Task<IActionResult> DownloadVersionLinux(string versionID) => await DownloadVersion(Storage.GetLinuxVersionFile, versionID, "linux");
+    
+    private async Task<IActionResult> DownloadVersion(Func<string, Task<FileStream>> getFile, string versionID, string additionalTag)
     {
         try
         {
-            Logger.Message($"{versionID} file request");
+            Logger.Message($"{versionID} with additional tag {additionalTag} file request");
             
-            FileStream stream = await Storage.GetVersionFile(versionID);
-            return File(stream, "application/zip", $"Deadays_{versionID}.zip");
+            FileStream stream = await getFile(versionID);
+            
+            return File(stream, "application/zip", $"Deadays_{versionID}_{additionalTag}.zip");
         }
         catch (Exception e)
         {
             Logger.Error(e);
-            return StatusCode(500, $"Failed getting version: {versionID}");
+            return StatusCode(500, $"Failed getting version: {versionID} with additional tag {additionalTag}");
         }
     }
 }

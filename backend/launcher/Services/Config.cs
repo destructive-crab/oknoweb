@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text.Json;
 using api.Debug;
 
@@ -7,13 +6,16 @@ namespace api.Services;
 public sealed class Config : IConfig
 {
     public string CONFIG_PATH => Path.Combine(Utils.GetConfigDirectory(), "config");
+
+    public string WindowsPathColumn => "win_path";
+    public string LinuxPathColumn   => "linux_path";
     
     public string IDColumn          => "id";
     public string NameColumn        => "name";
     public string TagColumn         => "tag";
-    public string PathColumn        => "path";
     public string ChangelogColumn   => "changelog";
     public string ReleaseDateColumn => "release_date";
+    public string DownloadsCount    => "downloads";
 
     public string DatabasePath       { get; private set; }
     public string VersionArchivePath { get; private set; }

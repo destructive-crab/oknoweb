@@ -1,3 +1,4 @@
+using api.Debug;
 using Microsoft.Data.Sqlite;
 
 namespace api.Services;
@@ -5,6 +6,7 @@ namespace api.Services;
 public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 {
     private readonly IConfig Config;
+    private readonly ILocalLogger Logger;
 
     private LocalVersionInfo CreateInfoFromReader(SqliteDataReader reader)
     {
@@ -14,13 +16,15 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
                 reader[Config.TagColumn]         as string,
                 reader[Config.ChangelogColumn]   as string,
                 reader[Config.ReleaseDateColumn] as string),
-            reader[Config.PathColumn] as string
+            reader[Config.WindowsPathColumn] as string,
+            reader[Config.LinuxPathColumn]   as string
             );
     }
 
-    public DatabaseController(IConfig config)
+    public DatabaseController(IConfig config, ILocalLogger logger)
     {
         Config = config;
+        Logger = logger;
     }
 
     public async Task<bool> ValidateUserAuth(string username, string password)
@@ -96,7 +100,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
                         infos.Add(CreateInfoFromReader(reader));
                     }            
                 }            
-            }            
+            }
         }
         
         return infos.ToArray();
@@ -108,13 +112,14 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            string insertCommand = $"insert into main ({Config.IDColumn}, {Config.PathColumn}, {Config.NameColumn}, {Config.TagColumn}, {Config.ChangelogColumn}, {Config.ReleaseDateColumn}) values(@id, @path, @name, @tag, @changelog, @release_date)";
+            string insertCommand = $"insert into main ({Config.IDColumn}, {Config.WindowsPathColumn}, {Config.WindowsPathColumn}, {Config.NameColumn}, {Config.TagColumn}, {Config.ChangelogColumn}, {Config.ReleaseDateColumn}) values(@id, @win_path, @linux_path, @name, @tag, @changelog, @release_date)";
 
             await using (SqliteCommand command = new(insertCommand, connection))
             {
                 command.Parameters.AddWithValue("@id",           info.PublicInfo.ID);
                 command.Parameters.AddWithValue("@name",         info.PublicInfo.Name);
-                command.Parameters.AddWithValue("@path",         info.Path);
+                command.Parameters.AddWithValue("@win_path",     info.WindowsZipPath);
+                command.Parameters.AddWithValue("@linux_path",   info.LinuxZipPath);
                 command.Parameters.AddWithValue("@tag",          info.PublicInfo.Tag);
                 command.Parameters.AddWithValue("@changelog",    info.PublicInfo.Changelog);
                 command.Parameters.AddWithValue("@release_date", info.PublicInfo.ReleaseDate);
@@ -124,20 +129,55 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         }
     }
 
-    public async Task EditVersion(string versionID, LocalVersionInfo info)
+    public async Task IncreaseDownloadsCount(string versionID)
+    {
+        LocalVersionInfo? info = await ReadVersionInfo(versionID);
+
+        if (info == null)
+        {
+            Logger.Error($"Failed getting version with ID: {versionID} while trying to increase downloads count.");
+            
+            return;
+        }
+        
+        int newCount = info.PublicInfo.Downloads + 1;
+        await WriteDownloadsCount(versionID, newCount);
+    }
+    
+    public async Task WriteDownloadsCount(string versionID, int newCount)
     {
         await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.DatabasePath}"))
         {
             await connection.OpenAsync();
 
             string editCommand = $"update main " +
-                                 $"set {Config.IDColumn} = @id, {Config.PathColumn} = @path, {Config.NameColumn} = @name, {Config.TagColumn} = @tag, {Config.ChangelogColumn} = @changelog, {Config.ReleaseDateColumn} = @release_date " +
+                                 $"set {Config.DownloadsCount} = @downloads_count " +
+                                 $"where {Config.IDColumn} = '{versionID}'";
+
+            await using (SqliteCommand command = new(editCommand, connection))
+            {
+                command.Parameters.Add("@downloads_count", SqliteType.Integer).Value = newCount;
+
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+    }
+    
+    public async Task WriteVersion(string versionID, LocalVersionInfo info)
+    {
+        await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.DatabasePath}"))
+        {
+            await connection.OpenAsync();
+
+            string editCommand = $"update main " +
+                                 $"set {Config.IDColumn} = @id, {Config.WindowsPathColumn} = @win_path, {Config.LinuxPathColumn} = @linux_path, {Config.NameColumn} = @name, {Config.TagColumn} = @tag, {Config.ChangelogColumn} = @changelog, {Config.ReleaseDateColumn} = @release_date " +
                                  $"where {Config.IDColumn} = '{versionID}'";
 
             await using (SqliteCommand command = new(editCommand, connection))
             {
                 command.Parameters.Add("@id",           SqliteType.Text).Value = info.PublicInfo.ID;
-                command.Parameters.Add("@path",         SqliteType.Text).Value = info.Path;
+                command.Parameters.Add("@win_path",     SqliteType.Text).Value = info.WindowsZipPath;
+                command.Parameters.Add("@linux_path",   SqliteType.Text).Value = info.LinuxZipPath;
                 command.Parameters.Add("@name",         SqliteType.Text).Value = info.PublicInfo.Name;
                 command.Parameters.Add("@tag",          SqliteType.Text).Value = info.PublicInfo.Tag;
                 command.Parameters.Add("@changelog",    SqliteType.Text).Value = info.PublicInfo.Changelog;

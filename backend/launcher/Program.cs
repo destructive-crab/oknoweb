@@ -8,7 +8,7 @@ public static class DDAPI
 {
     public static void Main()
     {
-        var builder = WebApplication.CreateBuilder();
+        WebApplicationBuilder builder = WebApplication.CreateBuilder();
         
         builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 200 * 1024 * 1024);
         

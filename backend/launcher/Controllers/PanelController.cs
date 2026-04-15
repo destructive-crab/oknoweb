@@ -37,8 +37,8 @@ public sealed class PanelController : ControllerBase
     public async Task<IActionResult> EditVersionChangelog(string versionID, [FromForm] string newChangelog)
         => await EditVersion(versionID, (i) => i.PublicInfo.Changelog = newChangelog);
     
-    [HttpPost("files/{versionID}")]
-    public async Task<IActionResult> EditVersionFile(string versionID, [FromForm] IFormFile file)
+    [HttpPost("files/windows/{versionID}")]
+    public async Task<IActionResult> EditWindowsVersionFile(string versionID, [FromForm] IFormFile winZip)
     {
         try
         {
@@ -49,9 +49,9 @@ public sealed class PanelController : ControllerBase
                 return StatusCode(400, $"Invalid ID {versionID}");
             }
             
-            info.Path = await Storage.WriteVersionOnDisk(file, versionID, info.PublicInfo.Tag);
+            info.WindowsZipPath = await Storage.WriteVersionOnDisk(winZip, versionID+"_win", info.PublicInfo.Tag);
 
-            await Writer.EditVersion(versionID, info);
+            await Writer.WriteVersion(versionID, info);
             
             return Ok();
         }
@@ -59,6 +59,31 @@ public sealed class PanelController : ControllerBase
         {
             Logger.Error(e);
             return StatusCode(500, "Failed uploading new version file");
+        }
+    }
+    
+    [HttpPost("files/windows/{versionID}")]
+    public async Task<IActionResult> EditLinuxVersionFile(string versionID, [FromForm] IFormFile linuxZip)
+    {
+        try
+        {
+            LocalVersionInfo? info = await Reader.ReadVersionInfo(versionID);
+            
+            if (info == null)
+            {
+                return StatusCode(400, $"Invalid ID {versionID}");
+            }
+            
+            info.LinuxZipPath = await Storage.WriteVersionOnDisk(linuxZip, versionID+"linux", info.PublicInfo.Tag);
+
+            await Writer.WriteVersion(versionID, info);
+            
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e);
+            return StatusCode(500, "Failed editing linux version file");
         }
     }
 
@@ -78,15 +103,14 @@ public sealed class PanelController : ControllerBase
                 versionInfo.PublicInfo.Name      = name;
                 versionInfo.PublicInfo.Tag       = tag;
                 versionInfo.PublicInfo.Changelog = changelog;
-
-                
                 
                 return Ok();
             }
             
-            string path = await Storage.WriteVersionOnDisk(file, versionID, tag);
+            string winPath = await Storage.WriteVersionOnDisk(file, versionID, tag);
+            string zipPath = await Storage.WriteVersionOnDisk(file, versionID, tag);
 
-            Writer.RegisterVersion(new LocalVersionInfo(new(versionID, name, tag, changelog, DateTime.Today.Date.ToString()),  path));
+            Writer.RegisterVersion(new LocalVersionInfo(new(versionID, name, tag, changelog, DateTime.Today.Date.ToString()), winPath, zipPath));
             
             return Ok();
         }
@@ -127,7 +151,7 @@ public sealed class PanelController : ControllerBase
             
             editInfo.Invoke(info);
             
-            await Writer.EditVersion(info.PublicInfo.ID, info);
+            await Writer.WriteVersion(info.PublicInfo.ID, info);
             
             return Ok();
         }

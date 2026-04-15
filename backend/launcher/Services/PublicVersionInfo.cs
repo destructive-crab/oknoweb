@@ -3,25 +3,34 @@ namespace api.Services;
 [Serializable]
 public sealed class LocalVersionInfo
 {
-    public PublicVersionInfo PublicInfo { get; private set; }
-    public string            Path       { get; set; }
+    public PublicVersionInfo PublicInfo     { get; private set; }
+    
+    public string            WindowsZipPath { get; set; }
+    public string            LinuxZipPath   { get; set; }
 
-    public LocalVersionInfo(PublicVersionInfo publicInfo, string path)
+    public LocalVersionInfo(PublicVersionInfo publicInfo, string windowsPath, string linuxPath)
     {
         PublicInfo = publicInfo;
-        Path = path;
+        
+        WindowsZipPath = windowsPath;
+        LinuxZipPath   = linuxPath;
     }
 }
 
 [Serializable]
 public sealed class PublicVersionInfo
 {
-    public string ID          { get; set; }
+    public string DownloadWindowsURL { get; set; }
+    public string DownloadLinuxURL   { get; set; }
     
+    public string ID          { get; set; }
+
     public string Name        { get; set; }
     public string Tag         { get; set; }
     public string Changelog   { get; set; }
     public string ReleaseDate { get; set; }
+    
+    public int    Downloads   { get; set; }
 
     public PublicVersionInfo(string id, string name, string tag, string changelog, string releaseDate)
     {
