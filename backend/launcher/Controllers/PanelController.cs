@@ -88,11 +88,13 @@ public sealed class PanelController : ControllerBase
     }
 
     [HttpPost("{versionID}")]
-    public async Task<IActionResult> PostVersion(string versionID, [FromForm] string name, [FromForm] string tag, [FromForm] IFormFile file, [FromForm] string changelog)
+    public async Task<IActionResult> PostVersion(string versionID, [FromForm] string name, [FromForm] string tag, [FromForm] IFormFile winZip, [FromForm] IFormFile linuxZip, [FromForm] string changelog)
     {
-        if (!file.FileName.EndsWith(".zip") && !file.FileName.EndsWith(".tar.gz"))
+        if ((!winZip.FileName.EndsWith(".zip") && !winZip.FileName.EndsWith(".tar.gz"))
+            || 
+            (!linuxZip.FileName.EndsWith(".zip") && !linuxZip.FileName.EndsWith(".tar.gz")))
         {
-            return StatusCode(400, $"Invalid file extension {file.FileName}");
+            return StatusCode(400, $"Invalid file extension {winZip.FileName} or {linuxZip.FileName}");
         }
 
         try
@@ -100,17 +102,19 @@ public sealed class PanelController : ControllerBase
             LocalVersionInfo? versionInfo = await Reader.ReadVersionInfo(versionID);
             if (versionInfo != null)
             {
-                versionInfo.PublicInfo.Name      = name;
-                versionInfo.PublicInfo.Tag       = tag;
-                versionInfo.PublicInfo.Changelog = changelog;
+                await EditVersionName(versionID, name);
+                await EditVersionTag(versionID, tag);
+                await EditVersionChangelog(versionID, changelog);
+                await EditWindowsVersionFile(versionID, winZip);
+                await EditLinuxVersionFile(versionID, linuxZip);
                 
                 return Ok();
             }
             
-            string winPath = await Storage.WriteVersionOnDisk(file, versionID, tag);
-            string zipPath = await Storage.WriteVersionOnDisk(file, versionID, tag);
+            string winPath = await Storage.WriteVersionOnDisk(winZip, versionID, tag);
+            string zipPath = await Storage.WriteVersionOnDisk(linuxZip, versionID, tag);
 
-            Writer.RegisterVersion(new LocalVersionInfo(new(versionID, name, tag, changelog, DateTime.Today.Date.ToString()), winPath, zipPath));
+            Writer.RegisterVersion(new LocalVersionInfo(new(versionID, name, tag, changelog, DateTime.Today.Date.ToString("dd/MM/yyyy")), winPath, zipPath));
             
             return Ok();
         }
