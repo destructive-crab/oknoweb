@@ -24,7 +24,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         //hardcoded stuff
         //need to setup all api and server domain in config
 
-        if (info.LinuxZipPath != "none")
+        if (info.WindowsZipPath != "none")
         {
             info.PublicInfo.DownloadWindowsURL = $"https://oknoweb.ru/api/versions/files/windows/{info.PublicInfo.ID}";
         }

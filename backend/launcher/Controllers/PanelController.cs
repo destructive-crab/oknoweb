@@ -105,6 +105,7 @@ public sealed class PanelController : ControllerBase
                 await EditVersionName(versionID, name);
                 await EditVersionTag(versionID, tag);
                 await EditVersionChangelog(versionID, changelog);
+                
                 await EditWindowsVersionFile(versionID, winZip);
                 await EditLinuxVersionFile(versionID, linuxZip);
                 
@@ -114,7 +115,7 @@ public sealed class PanelController : ControllerBase
             string winPath = await Storage.WriteVersionOnDisk(winZip, versionID, tag);
             string zipPath = await Storage.WriteVersionOnDisk(linuxZip, versionID, tag);
 
-            Writer.RegisterVersion(new LocalVersionInfo(new(versionID, name, tag, changelog, DateTime.Today.Date.ToString("dd/MM/yyyy")), winPath, zipPath));
+            Writer.RegisterVersion(new LocalVersionInfo(new(versionID, name, tag, changelog, DateTime.Today.Date.ToString("dd/MM/yyyy"), 0), winPath, zipPath));
             
             return Ok();
         }
