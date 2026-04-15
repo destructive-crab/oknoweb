@@ -33,7 +33,7 @@ public sealed class PanelController : ControllerBase
     public async Task<IActionResult> EditVersionTag(string versionID, [FromForm] string newTag)
         => await EditVersion(versionID, (i) => i.PublicInfo.Tag = newTag);
 
-    [HttpPost("versions/{versionID}/changelog")]
+    [HttpPost("{versionID}/changelog")]
     public async Task<IActionResult> EditVersionChangelog(string versionID, [FromForm] string newChangelog)
         => await EditVersion(versionID, (i) => i.PublicInfo.Changelog = newChangelog);
     
@@ -62,7 +62,7 @@ public sealed class PanelController : ControllerBase
         }
     }
     
-    [HttpPost("files/windows/{versionID}")]
+    [HttpPost("files/linux/{versionID}")]
     public async Task<IActionResult> EditLinuxVersionFile(string versionID, [FromForm] IFormFile linuxZip)
     {
         try
