@@ -10,12 +10,13 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 
     private LocalVersionInfo CreateInfoFromReader(SqliteDataReader reader)
     {
-        var info =  new LocalVersionInfo(
+        LocalVersionInfo info =  new LocalVersionInfo(
             new(reader[Config.IDColumn]          as string,
                 reader[Config.NameColumn]        as string,
                 reader[Config.TagColumn]         as string,
                 reader[Config.ChangelogColumn]   as string,
-                reader[Config.ReleaseDateColumn] as string),
+                reader[Config.ReleaseDateColumn] as string,
+                Int32.Parse(reader[Config.DownloadsCount] as string)),
             reader[Config.WindowsPathColumn] as string,
             reader[Config.LinuxPathColumn]   as string
             );
@@ -171,7 +172,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 
             await using (SqliteCommand command = new(editCommand, connection))
             {
-                command.Parameters.Add("@downloads_count", SqliteType.Integer).Value = newCount;
+                command.Parameters.Add("@downloads_count", SqliteType.Text).Value = newCount.ToString();
 
                 await command.ExecuteNonQueryAsync();
             }

@@ -32,13 +32,15 @@ public sealed class PublicVersionInfo
     
     public int    Downloads   { get; set; }
 
-    public PublicVersionInfo(string id, string name, string tag, string changelog, string releaseDate)
+    public PublicVersionInfo(string id, string name, string tag, 
+                             string changelog, string releaseDate, int downloads)
     {
         ID = id; 
         ReleaseDate = releaseDate;
         Name = name;
         Tag = tag;
         Changelog = changelog;
+        Downloads = downloads;
     }
 
     public override string ToString()
