@@ -89,6 +89,9 @@ public sealed class VersionsController : ControllerBase
         }
     }
 
+    [HttpGet("files/{versionID}")]
+    public async Task<IActionResult> DownloadVersionOld(string versionID) => await DownloadVersion(Storage.GetWindowsVersionFile, versionID, "win");
+
     [HttpGet("files/windows/{versionID}")]
     public async Task<IActionResult> DownloadVersionWindows(string versionID) => await DownloadVersion(Storage.GetWindowsVersionFile, versionID, "win");
 
