@@ -29,6 +29,10 @@ public sealed class PanelController : ControllerBase
     public async Task<IActionResult> EditVersionName(string versionID, [FromForm] string newName)
         => await EditVersion(versionID, (i) => i.PublicInfo.Name = newName);
 
+    [HttpPost("{versionID}/releasedate")]
+    public async Task<IActionResult> EditVersionReleaseDate(string versionID, [FromForm] string newDate)
+        => await EditVersion(versionID, (i) => i.PublicInfo.ReleaseDate = newDate);
+
     [HttpPost("{versionID}/tag")]
     public async Task<IActionResult> EditVersionTag(string versionID, [FromForm] string newTag)
         => await EditVersion(versionID, (i) => i.PublicInfo.Tag = newTag);
