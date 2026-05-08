@@ -93,7 +93,7 @@ public sealed class SubmissionsController : ControllerBase
 
     [Authorize]
     [HttpGet("panel/submissions")]
-    public async Task<IActionResult> GetAllPrivate(string subid)
+    public async Task<IActionResult> GetAllPrivate()
     {
         try
         {
