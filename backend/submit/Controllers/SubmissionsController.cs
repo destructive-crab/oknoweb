@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Submit;
 
 [ApiController]
-[Route("submit/api")]
+[Route("")]
 public sealed class SubmissionsController : ControllerBase
 {
     private readonly IDatabaseWriter  Writer;
