@@ -10,3 +10,5 @@
 
 #ide
 /launcher/.idea
+/backend/submit/bin
+/backend/submit/obj
