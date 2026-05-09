@@ -20,7 +20,7 @@ public sealed class SubmissionsController : ControllerBase
     }
 
     [HttpPost("new")]
-    public async Task<IActionResult> PostNewSubmission([FromForm] string name, [FromForm] string contact, [FromForm] string link, [FromForm]    string additionalInfo)
+    public async Task<IActionResult> PostNewSubmission([FromForm] string name, [FromForm] string contact, [FromForm] string link, [FromForm] string additionalInfo)
     {
         try
         {

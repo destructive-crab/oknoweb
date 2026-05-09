@@ -22,7 +22,7 @@ public class PublicSubmit
     {
         try
         {
-            int maxID = 1;
+            int maxID = 0;
             PrivateSubmit[] all = await reader.ReadAll();
             
             if (all.Length > 0)
