@@ -10,7 +10,7 @@ public sealed class PrivateSubmit : PublicSubmit
     public PrivateSubmit(string contact, string id, string status, string name, string link, string additionalInfo, string date)
         : base(id, status, name, link, additionalInfo, date)
     {
-        Contact = contact;
+        Contact = contact.Trim();
     }
 
 }
@@ -54,11 +54,11 @@ public class PublicSubmit
 
     public PublicSubmit(string id, string status, string name, string link, string additionalInfo, string date)
     {
-        ID = id;
-        Name = name;
-        Status = status;
-        Link = link;
-        AdditionalInfo = additionalInfo;
-        Date = date;
+        ID = id.Trim();
+        Name = name.Trim();
+        Status = status.Trim();
+        Link = link.Trim();
+        AdditionalInfo = additionalInfo.Trim();
+        Date = date.Trim();
     }
 }
