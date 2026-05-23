@@ -139,12 +139,28 @@ public sealed class SubmissionsController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("panel/submissions/review/{subid}")]
-    public async Task<IActionResult> MarkSubmissionAsReview(string subid, string videoLink)
+    [HttpPost("panel/submissions/review/set/{subid}")]
+    public async Task<IActionResult> ReviewSubmit(string subid, string reviewLink)
     {
         try
         {
-            await Writer.MarkAsReviewed(subid, videoLink);
+            await Writer.MarkAsReviewed(subid, reviewLink);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.ToString());
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+
+    [Authorize]
+    [HttpPost("panel/submissions/review/remove/{subid}")]
+    public async Task<IActionResult> RemoveSubmitReview(string subid, string reviewLink)
+    {
+        try
+        {
+            await Writer.MarkAsPending(subid);
             return Ok();
         }
         catch (Exception e)
