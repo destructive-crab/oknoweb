@@ -140,7 +140,7 @@ public sealed class SubmissionsController : ControllerBase
 
     [Authorize]
     [HttpPost("panel/submissions/review/set/{subid}")]
-    public async Task<IActionResult> ReviewSubmit(string subid, string reviewLink)
+    public async Task<IActionResult> ReviewSubmit(string subid, [FromForm] string reviewLink)
     {
         try
         {
@@ -156,7 +156,7 @@ public sealed class SubmissionsController : ControllerBase
 
     [Authorize]
     [HttpPost("panel/submissions/review/remove/{subid}")]
-    public async Task<IActionResult> RemoveSubmitReview(string subid, string reviewLink)
+    public async Task<IActionResult> RemoveSubmitReview(string subid)
     {
         try
         {
