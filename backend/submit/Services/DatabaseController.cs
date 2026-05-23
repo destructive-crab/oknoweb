@@ -18,7 +18,8 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
             reader[Config.NameColumn]           as string,
             reader[Config.LinkColumn]           as string,
             reader[Config.AdditionalInfoColumn] as string,
-            reader[Config.DateColumn]           as string
+            reader[Config.DateColumn]           as string,
+            reader[Config.ReviewLinkColumn]     as string
         );
     }
 

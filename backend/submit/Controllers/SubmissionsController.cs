@@ -25,7 +25,7 @@ public sealed class SubmissionsController : ControllerBase
         try
         {
             PrivateSubmit info = new PrivateSubmit(contact, await PublicSubmit.GenerateID(Reader, Logger),
-                PublicSubmit.UNVERIFIED_STATUS, name, link, additionalInfo, DateTime.Now.ToString("dd/MM/yyyy"));
+                PublicSubmit.UNVERIFIED_STATUS, name, link, additionalInfo, DateTime.Now.ToString("dd/MM/yyyy"), "none");
 
             await Writer.WriteSubmission(info);
 

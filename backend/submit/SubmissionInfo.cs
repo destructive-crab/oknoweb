@@ -7,8 +7,8 @@ public sealed class PrivateSubmit : PublicSubmit
 {
     public string Contact { get; set; }
 
-    public PrivateSubmit(string contact, string id, string status, string name, string link, string additionalInfo, string date)
-        : base(id, status, name, link, additionalInfo, date)
+    public PrivateSubmit(string contact, string id, string status, string name, string link, string additionalInfo, string date, string reviewLink)
+        : base(id, status, name, link, additionalInfo, date, reviewLink)
     {
         Contact = contact.Trim();
     }
@@ -52,7 +52,7 @@ public class PublicSubmit
     public string ReviewLink { get; set; } = "none"; 
     public string Date { get; set; } = "invalid";
 
-    public PublicSubmit(string id, string status, string name, string link, string additionalInfo, string date)
+    public PublicSubmit(string id, string status, string name, string link, string additionalInfo, string date, string reviewLink)
     {
         ID = id.Trim();
         Name = name.Trim();
@@ -60,5 +60,6 @@ public class PublicSubmit
         Link = link.Trim();
         AdditionalInfo = additionalInfo.Trim();
         Date = date.Trim();
+        ReviewLink = reviewLink.Trim();
     }
 }
