@@ -49,7 +49,7 @@ public class PublicSubmit
     public string Name { get; set; } = "invalid";
     public string Link { get; set; } = "invalid";
     public string AdditionalInfo { get; set; } = "invalid";
-    public string VideoLink { get; set; } = "none"; 
+    public string ReviewLink { get; set; } = "none"; 
     public string Date { get; set; } = "invalid";
 
     public PublicSubmit(string id, string status, string name, string link, string additionalInfo, string date)

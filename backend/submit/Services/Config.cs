@@ -12,7 +12,7 @@ public sealed class Config : IConfig
     public string DateColumn           => "date"; 
     public string ContactColumn        => "contact";
     public string AdditionalInfoColumn => "additionalInfo";
-    public string VideoLinkColumn      => "videoLink";
+    public string ReviewLinkColumn     => "videoLink";
 
     public string CONFIG_PATH => Path.Combine(Utils.GetConfigDirectory(), "config");
 

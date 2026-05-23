@@ -104,7 +104,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
             await connection.OpenAsync();
 
             string editCommand = $"update main " +
-                                 $"set {Config.IDColumn} = @id, {Config.StatusColumn} = @status, {Config.NameColumn} = @name, {Config.ContactColumn} = @contact, {Config.LinkColumn} = @link, {Config.AdditionalInfoColumn} = @additionalInfo, {Config.DateColumn} = @date, {Config.VideoLinkColumn} = {Config.VideoLinkColumn} = @videoLink" + 
+                                 $"set {Config.IDColumn} = @id, {Config.StatusColumn} = @status, {Config.NameColumn} = @name, {Config.ContactColumn} = @contact, {Config.LinkColumn} = @link, {Config.AdditionalInfoColumn} = @additionalInfo, {Config.DateColumn} = @date, {Config.ReviewLinkColumn} = @reviewLink" + 
                                  $"where {Config.IDColumn} = '{info.ID}'";
 
             await using (SqliteCommand command = new(editCommand, connection))
@@ -116,7 +116,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
                 command.Parameters.Add("@link",           SqliteType.Text).Value = info.Link;
                 command.Parameters.Add("@additionalInfo", SqliteType.Text).Value = info.AdditionalInfo;
                 command.Parameters.Add("@date",           SqliteType.Text).Value = info.Date;
-                command.Parameters.Add("@videoLink",           SqliteType.Text).Value = info.VideoLink;
+                command.Parameters.Add("@reviewLink",      SqliteType.Text).Value = info.ReviewLink;
 
                 await command.ExecuteNonQueryAsync();                
             }
@@ -132,7 +132,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
             string insertCommand = $"insert into main " +
                                    $"({Config.IDColumn}, {Config.StatusColumn}, {Config.ContactColumn}, " +
                                    $"{Config.NameColumn}, {Config.LinkColumn}, {Config.AdditionalInfoColumn}, " +
-                                   $"{Config.DateColumn}, {Config.VideoLinkColumn}) " +
+                                   $"{Config.DateColumn}, {Config.ReviewLinkColumn}) " +
                                    $"values(@id, @status, @contact, @name, @link, @additionalInfo, @date," +
                                    $"'https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUJcmljayByb2xs')";
 
@@ -192,7 +192,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
             await connection.OpenAsync();
 
             string editCommand = $"update main " +
-                                 $"set {Config.StatusColumn} = '{PublicSubmit.REVIEWED_STATUS}', {Config.VideoLinkColumn} = '{link}'" +
+                                 $"set {Config.StatusColumn} = '{PublicSubmit.REVIEWED_STATUS}', {Config.ReviewLinkColumn} = '{link}'" +
                                  $"where {Config.IDColumn} = '{subid}'";
 
             await using (SqliteCommand command = new(editCommand, connection))

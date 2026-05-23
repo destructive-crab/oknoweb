@@ -8,7 +8,7 @@ public interface IConfig
     public string DateColumn           { get; }
     public string ContactColumn        { get; }
     public string AdditionalInfoColumn { get; }
-    public string VideoLinkColumn      { get; }
+    public string ReviewLinkColumn      { get; }
 
     public string DatabasePath       { get; }
     public string UsersDatabasePath  { get; }
