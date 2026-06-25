@@ -13,12 +13,14 @@ export class Button {
 
   @Input('hpSM') public hpSM: string = '16';
   @Input('hpMD') public hpMD: string = '20';
+  @Input('hpXL') public hpXl: string = '20';
 
   @Input('wSM') public wSM: string = '';
   @Input('wMD') public wMD: string = '';
 
   @Input('textSizeSM') public textSizeSM: string = '';
   @Input('textSizeMD') public textSizeMD: string = '';
+  @Input('textSizeXL') public textSizeXL: string = '';
 
   @Input('color') public color: string = '';
   @Input('preset') public preset: string = '';
@@ -59,16 +61,18 @@ export class Button {
           break;
 
         case 'blue':
-          this.color = 'bg-white border-5 font-bold hover:bg-[#000555] hover:text-white';
+          this.color =
+            'font-bold bg-white text-blue-700 border-4 2xl:border-8 border-blue-700 hover:bg-blue-700 hover:text-white';
           break;
 
         case 'bluealt':
-          this.color = 'bg-[#000555] border-5 font-bold hover:bg-blue-400 text-white';
+          this.color = 'font-bold bg-[#000555] border-5 hover:bg-blue-400 text-white';
           break;
 
         case 't1':
           this.textSizeSM = '2';
           this.textSizeMD = '3';
+          this.textSizeXL = '4';
 
           this.hpSM = '10';
           this.hpMD = '10';
@@ -77,6 +81,7 @@ export class Button {
         case 't2':
           this.textSizeSM = '3';
           this.textSizeMD = '4';
+          this.textSizeXL = '6';
 
           this.hpSM = '12';
           this.hpMD = '14';
@@ -85,6 +90,7 @@ export class Button {
         case 't3':
           this.textSizeSM = '4';
           this.textSizeMD = '5';
+          this.textSizeXL = '6';
 
           this.hpSM = '16';
           this.hpMD = '20';
@@ -93,6 +99,17 @@ export class Button {
         case 't4':
           this.textSizeSM = '4';
           this.textSizeMD = '6';
+          this.textSizeXL = '7';
+
+          this.hpSM = '30';
+          this.hpMD = '40';
+          break;
+
+        case 't5':
+          this.textSizeSM = '5';
+          this.textSizeMD = '7';
+          this.textSizeXL = '8';
+
           this.hpSM = '50';
           this.hpMD = '40';
           break;
@@ -106,26 +123,6 @@ export class Button {
 
   openLink() {
     window.open(this.link, '_blank');
-  }
-
-  private parseColorFrom(partToRemove: string) {
-    let otherPart: string = this.preset.replace(partToRemove, '');
-
-    if (otherPart == 'pink') {
-      this.color = 'bg-pink-300 hover:bg-pink-500 active:bg-pink-600 text-pink-500 text-white';
-    }
-
-    if (otherPart == 'pinkalt') {
-      this.color = 'bg-pink-500 hover:bg-pink-400  active:bg-pink-600 text-pink-500 text-white';
-    }
-
-    if (otherPart == 'blue') {
-      this.color =
-        'bg-white border-5 font-bold h-[{{hp}}] hover: hover:bg-[#000555] hover:text-white';
-    }
-    if (otherPart == 'bluealt') {
-      this.color = 'bg-[#000555] border-5 font-bold h-[{{hp}}] hover: hover:bg-blue-400 text-white';
-    }
   }
 
   handleClick(event: MouseEvent): void {

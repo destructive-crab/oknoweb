@@ -64,6 +64,7 @@ export class Submissions {
             this.reviewedSubmissions.push(submit);
           }
         }
+        console.log(this.pendingSubmissions.length);
       });
   }
 
