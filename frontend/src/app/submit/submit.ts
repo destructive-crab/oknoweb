@@ -51,10 +51,10 @@ export class Submit {
       formData.append('link', this.link.value);
       formData.append('additionalInfo', this.additionalInfo.value);
 
-      this.http.post('https://oknoweb.ru/submit/api/new', formData).subscribe((a) => {
+      this.http.post('https://oknoweb.ru/submit/api/new', formData).subscribe((result) => {
         this.submitAccepted = true;
-        console.log(a);
-        this.router.navigate(['/submit/success/100']);
+        const id = JSON.parse(result.toString());
+        this.router.navigate([`/submit/success/${id}`]);
       });
     }
   }
