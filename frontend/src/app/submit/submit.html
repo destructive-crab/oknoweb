@@ -1,0 +1,62 @@
+<div>
+  <div class="block justify-center">
+    @if (!submitAccepted) {
+    <app-block>
+      <div class="flex w-full justify-center">
+        <img
+          class="h-38 md:h-60 object-contain object-center"
+          src="okno_submit.png"
+          alt="OKNO*SUBMIT"
+        />
+      </div>
+
+      <p class="font-main text-pink-500 text-5xl text-center">ЗАПОЛНИТЕ ФОРМУ</p>
+
+      <br />
+      <input
+        id="name"
+        type="text"
+        [formControl]="name"
+        placeholder="Название"
+        class="bg-white text-blue-700 font-main text-2xl md:text-4xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2"
+      />
+
+      <input
+        id="link"
+        type="text"
+        [formControl]="link"
+        placeholder="Ссылка на игру"
+        class="bg-white text-blue-700 font-main text-2xl md:text-4xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2"
+      />
+
+      <textarea
+        id="additionalInfo"
+        type="text"
+        [formControl]="additionalInfo"
+        rows="6"
+        placeholder="Кратко опишите ваш проект"
+        class="bg-white text-blue-700 h-40 resize-none font-main text-2xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2"
+      ></textarea>
+
+      <input
+        id="contacts"
+        type="text"
+        [formControl]="contacts"
+        placeholder="Контакты"
+        class="bg-white text-blue-700 font-main text-2xl md:text-4xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-5"
+      />
+      <app-button preset="full pinkalt t4" (onClick)="submit()">* SUBMIT * </app-button>
+
+      <br />
+      <br />
+
+      <p class="mb-2 font-main text-blue-600 text-center md:text-xl">
+        * Указанне контакты не публикуются. В случае тех. неполадок с вашей игрой, мы обратимся по
+        этим контактам. Вы можете оставить это поле пустым
+      </p>
+    </app-block>
+    } @else {
+    <app-block> Sucess </app-block>
+    }
+  </div>
+</div>

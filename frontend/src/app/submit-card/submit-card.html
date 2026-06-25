@@ -1,0 +1,31 @@
+<app-block>
+  <div class="font-main text-[44px] leading-8 text-center md:text-4xl text-[#000555]">
+    <br />
+    <h2><b> {{ this.submitInfo.name }}</b></h2>
+    <br />
+  </div>
+
+  <div class="font-main leading-7 text-2xl md:text-center md:text-2xl text-[#000555]">
+    <h3><b> {{ this.submitInfo.additionalInfo }} </b></h3>
+  </div>
+
+  <br />
+  <br />
+
+  <div
+    class="font-main leading-7 text-2xl md:text-center md:text-2xl text-[#000555] outline-2 outline-pink-400"
+  >
+    <a href="{{this.submitInfo.link}}" target="_blank"><b> {{ this.submitInfo.link }} </b></a>
+  </div>
+
+  @if (this.submitInfo.status == 'reviewed') {
+  <br />
+  <div class="flex justify-stretch w-full">
+    <app-button preset="full blue t1" (onClick)="openReview()" class="w-full text-center">
+      смотреть ревью
+    </app-button>
+  </div>
+  }
+
+  <div class="text-center mt-4 mb-4 font-main font-bold">{{this.submitInfo.date}}</div>
+</app-block>

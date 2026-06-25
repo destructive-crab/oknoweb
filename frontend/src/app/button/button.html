@@ -1,0 +1,27 @@
+<ng-template #buttonNGTemplate>
+  <ng-content></ng-content>
+</ng-template>
+
+@if (this.link != '') {
+<a href="{{this.link}}" target="_blank">
+  <button
+    class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl text-[#000555] w-{{wSM}} md:w-{{wMD}} hover:cursor-pointer h-{{hpSM}} md:h-{{hpMD}}"
+  >
+    <ng-container *ngTemplateOutlet="buttonNGTemplate" />
+  </button>
+</a>
+} @else if (this.routeLink != '') {
+<button
+  class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl text-[#000555] w-{{wSM}} md:w-{{wMD}} h-{{hpSM}} md:h-{{hpMD}} hover:cursor-pointer "
+  (click)="handleClick($event)"
+>
+  <ng-container *ngTemplateOutlet="buttonNGTemplate" />
+</button>
+} @else {
+<button
+  class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl text-[#000555] w-{{wSM}} md:w-{{wMD}} hover:cursor-pointer h-{{hpSM}} md:h-{{hpMD}}"
+  (click)="handleClick($event)"
+>
+  <ng-container *ngTemplateOutlet="buttonNGTemplate" />
+</button>
+}

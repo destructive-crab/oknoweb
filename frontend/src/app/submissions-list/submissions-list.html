@@ -1,0 +1,71 @@
+<div class="border-10 border-pink-400 border-double">
+  <br />
+
+  <div class="sticky top-0 z-50 center-wrap flex flex-col items-center justify-center">
+    <div class="w-[90vw] md:w-[70vw] flex">
+      <app-button preset="full pink t1" (onClick)="switchSortingType()" class="w-full text-center">
+        <i class="nf {{sortText}}"></i>
+      </app-button>
+
+      <app-button preset="full pink t1" (onClick)="switchShowcaseSize()" class="text-center w-full">
+        [{{showcaseSizeText}}]
+      </app-button>
+
+      @if (currentShowcaseSize != submissions.length){
+      <div class="w-[90vw] md:w-[70vw] flex">
+        <app-button preset="full pink t1" (onClick)="moveBackShowcase()" class="w-full text-center">
+          <i class="nf nf-md-menu_left"></i>
+        </app-button>
+        <div class="bg-pink-300 px-3 font-main font-bold text-2xl text-white">
+          {{this.currentShowcasePosition}}-{{(this.currentShowcasePosition +
+          this.currentShowcaseSize)}}
+        </div>
+        <app-button preset="full pink t1" (onClick)="moveNextShowcase()" class="w-full text-center">
+          <i class="nf nf-md-menu_right"></i>
+        </app-button>
+      </div>
+      }
+    </div>
+
+    <input
+      type="text"
+      placeholder="искать..."
+      (input)="filter($event.target.value)"
+      class="bg-white text-blue-700 w-[90vw] md:w-[70vw] font-main text-4xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0"
+    />
+  </div>
+
+  @for (item of this.filteredSubmissions; track item.id; let i = $index) { @if (i >=
+  this.currentShowcasePosition && i < (this.currentShowcasePosition + this.currentShowcaseSize) ) {
+  <div class="w-full">
+    <app-submit-card [submitInfo]="item" class="w-full items-center justify-center">
+    </app-submit-card>
+  </div>
+  } }
+
+  <div class="center-wrap flex flex-col items-center justify-center">
+    @if (currentShowcaseSize != submissions.length){
+    <div class="w-[60vw] flex">
+      <app-button preset="full pink" (onClick)="moveBackShowcase()" class="w-full text-center">
+        ⮂
+      </app-button>
+      <app-button preset="full pink" (onClick)="moveNextShowcase()" class="w-full text-center">
+        ⮀
+      </app-button>
+    </div>
+    }
+
+    <div>
+      <b class="font-main text-2xl text-pink-200">
+        {{this.currentShowcasePosition}}-{{(this.currentShowcasePosition +
+        this.currentShowcaseSize)}}
+      </b>
+    </div>
+    <br />
+    <br />
+  </div>
+  <br />
+</div>
+
+<br />
+<br />
