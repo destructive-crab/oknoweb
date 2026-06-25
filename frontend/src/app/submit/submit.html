@@ -17,6 +17,7 @@
         id="name"
         type="text"
         [formControl]="name"
+        [maxLength]="36"
         placeholder="Название"
         class="bg-white text-blue-700 font-main text-2xl md:text-4xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2"
       />
@@ -25,6 +26,7 @@
         id="link"
         type="text"
         [formControl]="link"
+        [maxLength]="60"
         placeholder="Ссылка на игру"
         class="bg-white text-blue-700 font-main text-2xl md:text-4xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2"
       />
@@ -33,6 +35,7 @@
         id="additionalInfo"
         type="text"
         [formControl]="additionalInfo"
+        [maxLength]="450"
         rows="6"
         placeholder="Кратко опишите ваш проект"
         class="bg-white text-blue-700 h-40 resize-none font-main text-2xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2"
@@ -42,6 +45,7 @@
         id="contacts"
         type="text"
         [formControl]="contacts"
+        [maxLength]="60"
         placeholder="Контакты"
         class="bg-white text-blue-700 font-main text-2xl md:text-4xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-5"
       />

@@ -132,17 +132,17 @@ export class SubmissionsList {
 
     switch (this.currentShowcaseSizeSwitcher) {
       case ShowcaseSize.Less: {
-        this.showcaseSizeText = 'less';
-        break;
-      }
-
-      case ShowcaseSize.More: {
         this.showcaseSizeText = 'more';
         break;
       }
 
-      case ShowcaseSize.All: {
+      case ShowcaseSize.More: {
         this.showcaseSizeText = 'all';
+        break;
+      }
+
+      case ShowcaseSize.All: {
+        this.showcaseSizeText = 'less';
         break;
       }
     }
