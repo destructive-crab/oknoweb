@@ -8,15 +8,15 @@ namespace Submit;
 [Route("")]
 public sealed class SubmissionsController : ControllerBase
 {
-    private readonly IDatabaseWriter  Writer;
-    private readonly IDatabaseReader  Reader;
-    private readonly ILocalLogger     Logger;
+    private readonly IDatabaseWriter Writer;
+    private readonly IDatabaseReader Reader;
+    private readonly ILocalLogger Logger;
 
     public SubmissionsController(IDatabaseWriter writer, IDatabaseReader reader, ILocalLogger logger)
     {
-	    Writer  = writer;
-	    Reader  = reader;
-        Logger  = logger;
+        Writer = writer;
+        Reader = reader;
+        Logger = logger;
     }
 
     [HttpPost("new")]
@@ -27,9 +27,9 @@ public sealed class SubmissionsController : ControllerBase
             PrivateSubmit info = new PrivateSubmit(contact, await PublicSubmit.GenerateID(Reader, Logger),
                 PublicSubmit.UNVERIFIED_STATUS, name, link, additionalInfo, DateTime.Now.ToString("dd/MM/yyyy"), "none");
 
-            await Writer.WriteSubmission(info);
+            //await Writer.WriteSubmission(info);
 
-            return Ok();
+            return Ok(info);
         }
         catch (Exception e)
         {
@@ -72,7 +72,7 @@ public sealed class SubmissionsController : ControllerBase
             {
                 return BadRequest($"No submission with {subid} ID");
             }
-            
+
             return Ok(await Reader.Read(subid));
         }
         catch (Exception e)
@@ -82,7 +82,7 @@ public sealed class SubmissionsController : ControllerBase
         }
     }
 
-    //admin 
+    //admin
 
     [Authorize]
     [HttpGet("panel/login")]
@@ -105,7 +105,7 @@ public sealed class SubmissionsController : ControllerBase
             return StatusCode(500, "Internal Server Error");
         }
     }
-    
+
     [Authorize]
     [HttpPost("panel/submissions/reject/{subid}")]
     public async Task<IActionResult> RejectSubmission(string subid)
