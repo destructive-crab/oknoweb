@@ -33,7 +33,8 @@ export class SubmissionsList {
 
   private currentShowcaseSizeSwitcher: ShowcaseSize = ShowcaseSize.Less;
   public currentShowcaseSize: number = 0;
-  public currentShowcasePosition: number = 0;
+  public currentTab: number = 1;
+  public tabsCount: number = 1;
   public showcaseSizeText: string = 'notinit';
 
   filter(filter: string) {
@@ -113,56 +114,58 @@ export class SubmissionsList {
   getShowcaseSize(size: ShowcaseSize): number {
     switch (size) {
       case ShowcaseSize.Less: {
-        return (this.currentShowcaseSize = 5);
+        return 5;
       }
 
       case ShowcaseSize.More: {
-        return (this.currentShowcaseSize = 10);
+        return 10;
       }
 
       case ShowcaseSize.All: {
-        this.currentShowcasePosition = 0;
-        return (this.currentShowcaseSize = this.submissions.length);
+        return this.submissions.length;
       }
     }
   }
 
   applyShowcaseSize(size: ShowcaseSize) {
     this.currentShowcaseSizeSwitcher = size;
+    this.currentTab = 1;
 
     switch (this.currentShowcaseSizeSwitcher) {
       case ShowcaseSize.Less: {
-        this.showcaseSizeText = 'more';
+        this.showcaseSizeText = 'less';
+        this.tabsCount = Math.ceil(this.filteredSubmissions.length / 5);
         break;
       }
 
       case ShowcaseSize.More: {
-        this.showcaseSizeText = 'all';
+        this.showcaseSizeText = 'more';
+        this.tabsCount = Math.ceil(this.filteredSubmissions.length / 10);
         break;
       }
 
       case ShowcaseSize.All: {
-        this.showcaseSizeText = 'less';
+        this.showcaseSizeText = 'all';
+        this.tabsCount = 0;
         break;
       }
     }
     this.currentShowcaseSize = this.getShowcaseSize(size);
   }
 
-  moveNextShowcase() {
-    this.currentShowcasePosition += this.getShowcaseSize(this.currentShowcaseSizeSwitcher);
+  moveNextTab() {
+    this.currentTab++;
 
-    if (this.currentShowcasePosition > this.submissions.length - this.currentShowcaseSize) {
-      this.currentShowcasePosition = this.submissions.length - this.currentShowcaseSize;
+    if (this.currentTab > this.tabsCount) {
+      this.currentTab = 0;
     }
   }
 
-  moveBackShowcase() {
-    this.currentShowcasePosition -= this.getShowcaseSize(this.currentShowcaseSizeSwitcher);
-    if (this.currentShowcasePosition < 0) {
-      this.currentShowcasePosition = 0;
-    } else if (this.currentShowcasePosition > this.submissions.length - this.currentShowcaseSize) {
-      this.currentShowcasePosition = this.submissions.length - this.currentShowcaseSize;
+  moveBackTab() {
+    this.currentTab--;
+
+    if (this.currentTab <= 0) {
+      this.currentTab = this.tabsCount;
     }
   }
 

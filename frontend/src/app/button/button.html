@@ -3,23 +3,23 @@
 </ng-template>
 
 @if (this.link != '') {
-<a href="{{this.link}}" target="_blank">
+<a href="{{this.link}}" target="{{this.target}}">
   <button
-    class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl 2xl:text-{{textSizeXL}}xl w-{{wSM}} md:w-{{wMD}} hover:cursor-pointer h-{{hpSM}} md:h-{{hpMD}}"
+    class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl 3xl:text-{{textSizeXL}}xl w-{{wSM}} md:w-{{wMD}} hover:cursor-pointer h-{{hpSM}} md:h-{{hpMD}}"
   >
     <ng-container *ngTemplateOutlet="buttonNGTemplate" />
   </button>
 </a>
 } @else if (this.routeLink != '') {
 <button
-  class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl 2xl:text-{{textSizeXL}}xl w-{{wSM}} md:w-{{wMD}} h-{{hpSM}} md:h-{{hpMD}} hover:cursor-pointer "
+  class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl 3xl:text-{{textSizeXL}}xl w-{{wSM}} md:w-{{wMD}} h-{{hpSM}} md:h-{{hpMD}} hover:cursor-pointer "
   (click)="handleClick($event)"
 >
   <ng-container *ngTemplateOutlet="buttonNGTemplate" />
 </button>
 } @else {
 <button
-  class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl 2xl:text-{{textSizeXL}}xl w-{{wSM}} md:w-{{wMD}} hover:cursor-pointer h-{{hpSM}} md:h-{{hpMD}}"
+  class="{{color}} items-center font-main text-{{textSizeSM}}xl md:text-{{textSizeMD}}xl 4xl:text-{{textSizeXL}}xl w-{{wSM}} md:w-{{wMD}} hover:cursor-pointer h-{{hpSM}} md:h-{{hpMD}}"
   (click)="handleClick($event)"
 >
   <ng-container *ngTemplateOutlet="buttonNGTemplate" />

@@ -25,6 +25,7 @@ export class Button {
   @Input('color') public color: string = '';
   @Input('preset') public preset: string = '';
 
+  @Input('target') public target: string = '_blank';
   @Input('routeLink') public routeLink: string = '';
   @Input('link') public link: string = '';
 
@@ -62,7 +63,7 @@ export class Button {
 
         case 'blue':
           this.color =
-            'font-bold bg-white text-blue-700 border-4 2xl:border-8 border-blue-700 hover:bg-blue-700 hover:text-white';
+            'font-bold bg-white text-blue-700 border-4 3xl:border-8 border-blue-700 hover:bg-blue-700 hover:text-white';
           break;
 
         case 'bluealt':

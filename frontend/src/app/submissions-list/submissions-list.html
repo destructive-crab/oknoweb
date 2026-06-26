@@ -13,14 +13,13 @@
 
       @if (currentShowcaseSize != submissions.length){
       <div class="w-[90vw] md:w-[70vw] flex">
-        <app-button preset="full pink t1" (onClick)="moveBackShowcase()" class="w-full text-center">
+        <app-button preset="full pink t1" (onClick)="moveBackTab()" class="w-full text-center">
           <i class="nf nf-md-menu_left"></i>
         </app-button>
         <div class="bg-pink-300 px-3 font-main font-bold text-2xl text-white">
-          {{this.currentShowcasePosition}}-{{(this.currentShowcasePosition +
-          this.currentShowcaseSize)}}
+          {{this.currentTab}}/{{this.tabsCount}}
         </div>
-        <app-button preset="full pink t1" (onClick)="moveNextShowcase()" class="w-full text-center">
+        <app-button preset="full pink t1" (onClick)="moveNextTab()" class="w-full text-center">
           <i class="nf nf-md-menu_right"></i>
         </app-button>
       </div>
@@ -35,8 +34,9 @@
     />
   </div>
 
-  @for (item of this.filteredSubmissions; track item.id; let i = $index) { @if (i >=
-  this.currentShowcasePosition && i < (this.currentShowcasePosition + this.currentShowcaseSize) ) {
+  @for (item of this.filteredSubmissions; track item.id; let i = $index) { @if (i >
+  (this.currentTab-1)*this.currentShowcaseSize && i <= (this.currentTab *
+  this.currentShowcaseSize)){
   <div class="w-full">
     <app-submit-card [submitInfo]="item" class="w-full items-center justify-center">
     </app-submit-card>
@@ -46,23 +46,18 @@
   <div class="center-wrap flex flex-col items-center justify-center">
     @if (currentShowcaseSize != submissions.length){
     <div class="w-[60vw] flex">
-      <app-button preset="full pink" (onClick)="moveBackShowcase()" class="w-full text-center">
-        ⮂
+      <app-button preset="full pink" (onClick)="moveBackTab()" class="w-full text-center">
+        <i class="nf nf-md-menu_left"></i>
       </app-button>
-      <app-button preset="full pink" (onClick)="moveNextShowcase()" class="w-full text-center">
-        ⮀
+      <app-button preset="full pink" (onClick)="moveNextTab()" class="w-full text-center">
+        <i class="nf nf-md-menu_right"></i>
       </app-button>
     </div>
     }
 
     <div>
-      <b class="font-main text-2xl text-pink-200">
-        {{this.currentShowcasePosition}}-{{(this.currentShowcasePosition +
-        this.currentShowcaseSize)}}
-      </b>
+      <b class="font-main text-2xl text-pink-200"> {{this.currentTab}}/{{this.tabsCount}} </b>
     </div>
-    <br />
-    <br />
   </div>
   <br />
 </div>
