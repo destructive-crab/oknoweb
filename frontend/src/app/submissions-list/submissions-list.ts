@@ -157,7 +157,7 @@ export class SubmissionsList {
     this.currentTab++;
 
     if (this.currentTab > this.tabsCount) {
-      this.currentTab = 0;
+      this.currentTab = 1;
     }
   }
 
