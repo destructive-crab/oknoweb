@@ -16,7 +16,7 @@
         <app-button preset="full pink t1" (onClick)="moveBackTab()" class="w-full text-center">
           <i class="nf nf-md-menu_left"></i>
         </app-button>
-        <div class="bg-pink-300 px-3 font-main font-bold text-2xl text-white">
+        <div class="bg-pink-400 px-3 font-main font-bold text-2xl text-white">
           {{this.currentTab}}/{{this.tabsCount}}
         </div>
         <app-button preset="full pink t1" (onClick)="moveNextTab()" class="w-full text-center">
@@ -30,7 +30,7 @@
       type="text"
       placeholder="искать..."
       (input)="filter($event.target.value)"
-      class="bg-white text-blue-700 w-[90vw] md:w-[70vw] font-main text-4xl text-center border-5 border-pink-400 focus:outline-pink-50 focus:ring-0"
+      class="bg-white text-blue-700 w-[90vw] md:w-[70vw] font-main text-4xl text-center border-5 border-pink-500 focus:outline-pink-50 focus:ring-0"
     />
   </div>
 

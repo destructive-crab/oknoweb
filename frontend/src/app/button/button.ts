@@ -49,7 +49,7 @@ export class Button {
           break;
 
         case 'pink':
-          this.color = 'bg-pink-300 hover:bg-pink-500 active:bg-pink-600 text-pink-500 text-white';
+          this.color = 'bg-pink-400 hover:bg-pink-500 active:bg-pink-600 text-pink-500 text-white';
           break;
 
         case 'pinkalt':
