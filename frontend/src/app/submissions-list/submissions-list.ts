@@ -41,6 +41,8 @@ export class SubmissionsList {
     this.filteredSubmissions = this.sortedSubmissions.filter((item) =>
       item.name.toLowerCase().includes(filter.toLowerCase()),
     );
+
+    this.applyShowcaseSize(this.currentShowcaseSizeSwitcher);
   }
 
   switchSortingType() {
@@ -146,10 +148,15 @@ export class SubmissionsList {
 
       case ShowcaseSize.All: {
         this.showcaseSizeText = 'все';
-        this.tabsCount = 0;
+        this.tabsCount = 1;
         break;
       }
     }
+
+    if (this.tabsCount == 0) {
+      this.tabsCount = 1;
+    }
+
     this.currentShowcaseSize = this.getShowcaseSize(size);
   }
 
