@@ -2,7 +2,7 @@
   <br />
 
   <div class="sticky top-0 z-50 block">
-    <div class="mx-[8vw]">
+    <div class="m-0 md:mx-[8vw]">
       <div class="flex">
         <app-button
           preset="full pink t1"
@@ -44,9 +44,9 @@
     </div>
   </div>
 
-  @for (item of this.filteredSubmissions; track item.id; let i = $index) { @if (i >
-  (this.currentTab-1)*this.currentShowcaseSize && i <= (this.currentTab *
-  this.currentShowcaseSize)){
+  @for (item of this.filteredSubmissions; track item.id; let i = $index) { @if (i >=
+  (this.currentTab-1)*this.currentShowcaseSize && i <= (this.currentTab * this.currentShowcaseSize +
+  1)){
   <div class="w-full">
     <app-submit-card [submitInfo]="item" class="w-full items-center justify-center">
     </app-submit-card>

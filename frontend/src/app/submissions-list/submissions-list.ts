@@ -133,19 +133,19 @@ export class SubmissionsList {
 
     switch (this.currentShowcaseSizeSwitcher) {
       case ShowcaseSize.Less: {
-        this.showcaseSizeText = 'less';
+        this.showcaseSizeText = '5 игр';
         this.tabsCount = Math.ceil(this.filteredSubmissions.length / 5);
         break;
       }
 
       case ShowcaseSize.More: {
-        this.showcaseSizeText = 'more';
+        this.showcaseSizeText = '10 игр';
         this.tabsCount = Math.ceil(this.filteredSubmissions.length / 10);
         break;
       }
 
       case ShowcaseSize.All: {
-        this.showcaseSizeText = 'all';
+        this.showcaseSizeText = 'все';
         this.tabsCount = 0;
         break;
       }
