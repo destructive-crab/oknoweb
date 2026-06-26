@@ -53,7 +53,7 @@ export class Button {
           break;
 
         case 'pinkalt':
-          this.color = 'bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-pink-500 text-white';
+          this.color = 'bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-white';
           break;
 
         case 'pinkalt2':
@@ -71,45 +71,54 @@ export class Button {
           break;
 
         case 't1':
-          this.textSizeSM = '2';
-          this.textSizeMD = '3';
-          this.textSizeXL = '4';
+          this.textSizeSM = '2xl';
+          this.textSizeMD = '3xl';
+          this.textSizeXL = '4xl';
 
           this.hpSM = '10';
           this.hpMD = '10';
           break;
 
         case 't2':
-          this.textSizeSM = '3';
-          this.textSizeMD = '4';
-          this.textSizeXL = '6';
+          this.textSizeSM = '3xl';
+          this.textSizeMD = '4xl';
+          this.textSizeXL = '6xl';
 
           this.hpSM = '12';
           this.hpMD = '14';
           break;
 
         case 't3':
-          this.textSizeSM = '4';
-          this.textSizeMD = '5';
-          this.textSizeXL = '6';
+          this.textSizeSM = '4xl';
+          this.textSizeMD = '5xl';
+          this.textSizeXL = '6xl';
 
           this.hpSM = '16';
           this.hpMD = '20';
           break;
 
         case 't4':
-          this.textSizeSM = '4';
-          this.textSizeMD = '6';
-          this.textSizeXL = '7';
+          this.textSizeSM = '4xl';
+          this.textSizeMD = '6xl';
+          this.textSizeXL = '7xl';
 
           this.hpSM = '30';
           this.hpMD = '40';
           break;
 
         case 't5':
-          this.textSizeSM = '5';
-          this.textSizeMD = '7';
-          this.textSizeXL = '8';
+          this.textSizeSM = '5xl';
+          this.textSizeMD = '7xl';
+          this.textSizeXL = '8xl';
+
+          this.hpSM = '50';
+          this.hpMD = '40';
+          break;
+
+        case 'tvw':
+          this.textSizeSM = '[2vw]';
+          this.textSizeMD = '[2vw]';
+          this.textSizeXL = '[2vw]';
 
           this.hpSM = '50';
           this.hpMD = '40';

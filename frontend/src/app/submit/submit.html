@@ -1,16 +1,15 @@
 <div>
-  <div class="flex items-center justify-center">
-    @if (!submitAccepted) {
+  <div class="flex items-center justify-center w-full">
     <app-block>
       <div class="flex w-full justify-center">
         <img
-          class="h-38 md:h-60 3xl:h-120 object-contain object-center 3xl:mb-10"
+          class="h-24 md:h-[12vw] object-contain object-center 3xl:mb-10"
           src="okno_submit.png"
           alt="OKNO*SUBMIT"
         />
       </div>
 
-      <p class="font-main text-pink-500 text-5xl 3xl:text-9xl text-center">ЗАПОЛНИТЕ ФОРМУ</p>
+      <p class="font-main text-pink-500 text-5xl md:text-[5vw] text-center">ЗАПОЛНИТЕ ФОРМУ</p>
 
       <br />
       <input
@@ -19,7 +18,7 @@
         [formControl]="name"
         [maxLength]="36"
         placeholder="Название"
-        class="bg-white text-blue-700 font-main text-2xl md:text-4xl 3xl:text-7xl text-center border-5 3xl:border-8 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2 3xl:mb-8"
+        class="bg-white text-blue-700 font-main text-2xl md:text-[2vw] text-center border-5 3xl:border-8 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2 3xl:mb-8"
       />
 
       <input
@@ -28,7 +27,7 @@
         [formControl]="link"
         [maxLength]="60"
         placeholder="Ссылка на игру"
-        class="bg-white text-blue-700 font-main text-2xl md:text-4xl 3xl:text-7xl text-center border-5 3xl:border-8 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2 3xl:mb-8"
+        class="bg-white text-blue-700 font-main text-2xl md:text-[2vw] text-center border-5 3xl:border-8 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2 3xl:mb-8"
       />
 
       <textarea
@@ -38,7 +37,7 @@
         [maxLength]="450"
         rows="6"
         placeholder="Кратко опишите ваш проект"
-        class="bg-white text-blue-700 font-main text-2xl md:text-4xl 3xl:text-7xl text-center border-5 3xl:border-8 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2 3xl:mb-8"
+        class="bg-white text-blue-700 font-main text-2xl md:text-[2vw] text-center border-5 3xl:border-8 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2 3xl:mb-8"
       ></textarea>
 
       <input
@@ -47,20 +46,20 @@
         [formControl]="contacts"
         [maxLength]="60"
         placeholder="Контакты"
-        class="bg-white text-blue-700 font-main text-2xl md:text-4xl 3xl:text-7xl text-center border-5 3xl:border-8 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2 3xl:mb-8"
+        class="bg-white text-blue-700 font-main text-2xl md:text-[2vw] text-center border-5 3xl:border-8 border-pink-400 focus:outline-pink-50 focus:ring-0 w-full mb-2 3xl:mb-8"
       />
-      <app-button preset="full pinkalt t5" (onClick)="submit()">* SUBMIT * </app-button>
-
+      <button
+        class="bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-white items-center font-main text-4xl md:text-[4vw] hover:cursor-pointer w-full"
+      >
+        <b> *submit*</b>
+      </button>
       <br />
       <br />
 
-      <p class="mb-2 font-main text-blue-600 text-center md:text-xl">
+      <p class="mb-2 font-main text-blue-600 text-center text-sm md:text-[2vw]">
         * Ваши контакты не публикуются. В случае тех. неполадок с вашей игрой, мы обратимся по этим
         контактам. Вы можете оставить это поле пустым
       </p>
     </app-block>
-    } @else {
-    <app-block> Sucess </app-block>
-    }
   </div>
 </div>
