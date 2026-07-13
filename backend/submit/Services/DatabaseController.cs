@@ -122,8 +122,8 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            string editCommand = $"update {Config.SubmissionsTable}" +
-                                 $"set {Config.IDColumn} = @id, {Config.StatusColumn} = @status, {Config.NameColumn} = @name, {Config.ContactColumn} = @contact, {Config.LinkColumn} = @link, {Config.AdditionalInfoColumn} = @additionalInfo, {Config.DateColumn} = @date, {Config.ReviewLinkColumn} = @reviewLink" + 
+            string editCommand = $"update {Config.SubmissionsTable} " +
+                                 $"set {Config.IDColumn} = @id, {Config.StatusColumn} = @status, {Config.NameColumn} = @name, {Config.ContactColumn} = @contact, {Config.LinkColumn} = @link, {Config.AdditionalInfoColumn} = @additionalInfo, {Config.DateColumn} = @date, {Config.ReviewLinkColumn} = @reviewLink " + 
                                  $"where {Config.IDColumn} = @where_id";
 
             await using (SqliteCommand command = new(editCommand, connection))
@@ -135,8 +135,8 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
                 command.Parameters.Add("@link",           SqliteType.Text).Value = info.Link;
                 command.Parameters.Add("@additionalInfo", SqliteType.Text).Value = info.AdditionalInfo;
                 command.Parameters.Add("@date",           SqliteType.Text).Value = info.Date;
-                command.Parameters.Add("@reviewLink",      SqliteType.Text).Value = info.ReviewLink;
-                command.Parameters.Add("@where_id",        SqliteType.Text).Value = info.ID;
+                command.Parameters.Add("@reviewLink",     SqliteType.Text).Value = info.ReviewLink;
+                command.Parameters.Add("@where_id",       SqliteType.Text).Value = info.ID;
 
                 await command.ExecuteNonQueryAsync();                
             }
