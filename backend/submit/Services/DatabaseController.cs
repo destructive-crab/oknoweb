@@ -149,7 +149,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            string insertCommand = $"insert into {Config.SubmissionsTable}" +
+            string insertCommand = $"insert into {Config.SubmissionsTable} " +
                                    $"({Config.IDColumn}, {Config.StatusColumn}, {Config.ContactColumn}, " +
                                    $"{Config.NameColumn}, {Config.LinkColumn}, {Config.AdditionalInfoColumn}, " +
                                    $"{Config.DateColumn}, {Config.ReviewLinkColumn}) " +
@@ -199,8 +199,8 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 
             await using (SqliteCommand command = new(editCommand, connection))
             {
-                command.Parameters.AddWithValue("@status", PublicSubmit.PENDING_STATUS);
-                command.Parameters.AddWithValue("@subid",  subid);
+                command.Parameters.Add("@status", SqliteType.Text).Value = PublicSubmit.PENDING_STATUS;
+                command.Parameters.Add("@subid",  SqliteType.Text).Value = subid;
                 await command.ExecuteNonQueryAsync();                
             }
         }

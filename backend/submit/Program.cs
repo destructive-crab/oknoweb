@@ -10,7 +10,7 @@ public static class OknoSubmit
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
         
-        builder.Services.AddSingleton<ILocalLogger,     LocalLogger>();
+        builder.Services.AddSingleton<ILocalLogger,        LocalLogger>();
         
         builder.Services.AddSingleton<IConfig,             Config>();
         builder.Services.AddSingleton<IDatabaseReader,     DatabaseController>();

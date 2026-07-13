@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="37d98474-bd43-43a0-8133-a1a96161e554" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Services/Config.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/Config.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Services/DatabaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/DatabaseController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Services/IConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/IConfig.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +21,7 @@
     <setting file="file://$PROJECT_DIR$/Auth/PanelAuthenticationHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Controllers/SubmissionsController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Debug/ILocalLogger.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Services/Config.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Services/DatabaseController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Services/IConfig.cs" root0="SKIP_HIGHLIGHTING" />
