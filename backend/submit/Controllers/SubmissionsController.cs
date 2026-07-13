@@ -24,6 +24,7 @@ public sealed class SubmissionsController : ControllerBase
     {
         try
         {
+            Logger.Message($"NewS: {name} {contact} {additionalInfo} {link}");
             PrivateSubmit info = new PrivateSubmit(contact, await PublicSubmit.GenerateID(Reader, Logger),
                 PublicSubmit.UNVERIFIED_STATUS, name, link, additionalInfo, DateTime.Now.ToString("dd/MM/yyyy"), "none");
 
@@ -138,6 +139,30 @@ public sealed class SubmissionsController : ControllerBase
         }
     }
 
+    [Authorize]
+    [HttpPost("panel/submissions/edit/{subid}")]
+    public async Task<IActionResult> EditSubmission([FromForm] string id, [FromForm] string name, [FromForm] string contact, [FromForm] string link, [FromForm] string additionalInfo)
+    {
+        try
+        {
+            var submitInfo = await Reader.Read(id);
+            
+            submitInfo.Name = name;
+            submitInfo.Contact = contact;
+            submitInfo.Link = link;
+            submitInfo.AdditionalInfo = additionalInfo;
+            
+            await Writer.WriteSubmission(submitInfo);
+            
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.ToString());
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
     [Authorize]
     [HttpPost("panel/submissions/review/set/{subid}")]
     public async Task<IActionResult> ReviewSubmit(string subid, [FromForm] string reviewLink)
