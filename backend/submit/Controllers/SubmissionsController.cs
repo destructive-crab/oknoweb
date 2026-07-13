@@ -191,8 +191,8 @@ public sealed class SubmissionsController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("panel/submissions/edit/{subid}")]
-    public async Task<IActionResult> EditSubmission([FromForm] string id, [FromForm] string name, [FromForm] string contact, [FromForm] string link, [FromForm] string additionalInfo, [FromForm] string date)
+    [HttpPost("panel/submissions/edit/{id}")]
+    public async Task<IActionResult> EditSubmission([FromForm] string name, [FromForm] string contact, [FromForm] string link, [FromForm] string additionalInfo, [FromForm] string date)
     {
         try
         {
