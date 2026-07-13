@@ -1,5 +1,7 @@
 public interface IConfig
 {
+    public string SubmissionsTable     { get; }
+    
     public string IDColumn             { get; }
     public string StatusColumn         { get; }
     

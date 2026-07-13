@@ -51,7 +51,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new SqliteCommand("SELECT EXISTS(SELECT 1 FROM main WHERE id = @id)", connection))
+            await using (SqliteCommand command = new SqliteCommand($"SELECT EXISTS(SELECT 1 FROM {Config.SubmissionsTable} WHERE id = @id)", connection))
             {
                 command.Parameters.AddWithValue("@id", id);
                 object? result = await command.ExecuteScalarAsync();
@@ -68,7 +68,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new SqliteCommand("SELECT * FROM main WHERE id = @id", connection))
+            await using (SqliteCommand command = new SqliteCommand($"SELECT * FROM {Config.SubmissionsTable} WHERE id = @id", connection))
             {
                 command.Parameters.AddWithValue("@id", id);
                 await using (SqliteDataReader reader = await command.ExecuteReaderAsync())
@@ -96,7 +96,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new SqliteCommand("SELECT * FROM main", connection))
+            await using (SqliteCommand command = new SqliteCommand($"SELECT * FROM {Config.SubmissionsTable}", connection))
             {
                 await using (SqliteDataReader reader = await command.ExecuteReaderAsync())
                 {
@@ -122,7 +122,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            string editCommand = $"update main " +
+            string editCommand = $"update {Config.SubmissionsTable}" +
                                  $"set {Config.IDColumn} = @id, {Config.StatusColumn} = @status, {Config.NameColumn} = @name, {Config.ContactColumn} = @contact, {Config.LinkColumn} = @link, {Config.AdditionalInfoColumn} = @additionalInfo, {Config.DateColumn} = @date, {Config.ReviewLinkColumn} = @reviewLink" + 
                                  $"where {Config.IDColumn} = @where_id";
 
@@ -149,7 +149,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            string insertCommand = $"insert into main " +
+            string insertCommand = $"insert into {Config.SubmissionsTable}" +
                                    $"({Config.IDColumn}, {Config.StatusColumn}, {Config.ContactColumn}, " +
                                    $"{Config.NameColumn}, {Config.LinkColumn}, {Config.AdditionalInfoColumn}, " +
                                    $"{Config.DateColumn}, {Config.ReviewLinkColumn}) " +
@@ -177,7 +177,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new("DELETE FROM main WHERE id = @id", connection))
+            await using (SqliteCommand command = new($"DELETE FROM {Config.SubmissionsTable} WHERE id = @id", connection))
             {
                 command.Parameters.AddWithValue("@id", id);
                 await command.ExecuteNonQueryAsync();
@@ -193,7 +193,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            string editCommand = $"update main " +
+            string editCommand = $"update {Config.SubmissionsTable} " +
                                  $"set {Config.StatusColumn} = @status " +
                                  $"where {Config.IDColumn} = @subid";
 
@@ -214,7 +214,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            string editCommand = $"update main " +
+            string editCommand = $"update {Config.SubmissionsTable} " +
                                  $"set {Config.StatusColumn} = @status, {Config.ReviewLinkColumn} = @link " +
                                  $"where {Config.IDColumn} = @subid";
 
