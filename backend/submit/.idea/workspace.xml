@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="37d98474-bd43-43a0-8133-a1a96161e554" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Services/DatabaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/DatabaseController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/SubmissionsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/SubmissionsController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
