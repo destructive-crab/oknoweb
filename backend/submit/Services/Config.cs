@@ -5,8 +5,8 @@ namespace Submit;
 
 public sealed class Config : IConfig
 {
-    public string SubmissionsTable => "submissions";
-    
+    public string SubmissionsTable     => "submissions";
+                                      
     public string IDColumn             => "id"; 
     public string StatusColumn         => "status";
     public string NameColumn           => "name";

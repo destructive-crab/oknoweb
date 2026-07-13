@@ -39,6 +39,57 @@ public sealed class SubmissionsController : ControllerBase
         }
     }
 
+    [HttpGet("submissions_verified_count")]
+    public async Task<IActionResult> GetVerifiedSubmissionsCount()
+    {
+        try
+        {
+            PrivateSubmit[] all = await Reader.ReadAll();
+            List<PublicSubmit> pubAll = new();
+
+            for (var i = 0; i < all.Length; i++)
+            {
+                if (all[i].Status == PublicSubmit.REVIEWED_STATUS || all[i].Status == PublicSubmit.PENDING_STATUS)
+                {
+                    pubAll.Add(all[i]);
+                }
+            }
+
+            return Ok(pubAll.Count);
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.ToString());
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    
+    [HttpGet("submissions_unverified_count")]
+    public async Task<IActionResult> GetUnverifiedSubmissionsCount()
+    {
+        try
+        {
+            PrivateSubmit[] all = await Reader.ReadAll();
+            List<PublicSubmit> pubAll = new();
+
+            for (var i = 0; i < all.Length; i++)
+            {
+                if (all[i].Status == PublicSubmit.UNVERIFIED_STATUS)
+                {
+                    pubAll.Add(all[i]);
+                }
+            }
+
+            return Ok(pubAll.Count);
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.ToString());
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
     [HttpGet("submissions")]
     public async Task<IActionResult> GetAllSubmissions()
     {
@@ -141,7 +192,7 @@ public sealed class SubmissionsController : ControllerBase
 
     [Authorize]
     [HttpPost("panel/submissions/edit/{subid}")]
-    public async Task<IActionResult> EditSubmission([FromForm] string id, [FromForm] string name, [FromForm] string contact, [FromForm] string link, [FromForm] string additionalInfo)
+    public async Task<IActionResult> EditSubmission([FromForm] string id, [FromForm] string name, [FromForm] string contact, [FromForm] string link, [FromForm] string additionalInfo, [FromForm] string date)
     {
         try
         {
@@ -151,6 +202,7 @@ public sealed class SubmissionsController : ControllerBase
             submitInfo.Contact = contact;
             submitInfo.Link = link;
             submitInfo.AdditionalInfo = additionalInfo;
+            submitInfo.Date = date;
             
             await Writer.WriteSubmission(submitInfo);
             
