@@ -27,14 +27,16 @@ public class PanelAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.UsersDatabasePath}"))
         {
             await connection.OpenAsync();
-            await using (SqliteCommand command = new SqliteCommand($"SELECT * FROM users WHERE username = '{username}' and password = '{password}'", connection))
-	        {
+            await using (SqliteCommand command = new SqliteCommand("SELECT * FROM users WHERE username = @username AND password = @password", connection))
+            {
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", password);
                 await using (SqliteDataReader reader = await command.ExecuteReaderAsync())
-		        {
-		            return await reader.ReadAsync();
-		        }
-	        }	
-	    }	
+                {
+                    return await reader.ReadAsync();
+                }
+            }
+        }
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()

@@ -48,14 +48,16 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.DatabasePath}"))
         {
             await connection.OpenAsync();
-            await using (SqliteCommand command = new SqliteCommand($"SELECT * FROM users WHERE username = '{username}' and password = '{password}'", connection))
-	        {
+            await using (SqliteCommand command = new SqliteCommand("SELECT * FROM users WHERE username = @username AND password = @password", connection))
+            {
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", password);
                 await using (SqliteDataReader reader = await command.ExecuteReaderAsync())
-		        {
-		            return await reader.ReadAsync();
-		        }
-	        }	
-	    }	
+                {
+                    return await reader.ReadAsync();
+                }
+            }
+        }
     }
 
     public async Task<bool> HasVersion(string id)
@@ -64,8 +66,9 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new SqliteCommand($"SELECT EXISTS(SELECT 1 FROM main WHERE id = '{id}')", connection))
+            await using (SqliteCommand command = new SqliteCommand("SELECT EXISTS(SELECT 1 FROM main WHERE id = @id)", connection))
             {
+                command.Parameters.AddWithValue("@id", id);
                 object? result = await command.ExecuteScalarAsync();
                 int count = Convert.ToInt32(result);
 
@@ -80,8 +83,10 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new SqliteCommand($"SELECT * FROM main WHERE id = '{id}'", connection))
+            await using (SqliteCommand command = new SqliteCommand("SELECT * FROM main WHERE id = @id", connection))
             {
+                command.Parameters.AddWithValue("@id", id);
+
                 await using (SqliteDataReader reader = await command.ExecuteReaderAsync())
                 {
                     bool valid = await reader.ReadAsync();
@@ -168,11 +173,12 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 
             string editCommand = $"update main " +
                                  $"set {Config.DownloadsCount} = @downloads_count " +
-                                 $"where {Config.IDColumn} = '{versionID}'";
+                                 $"where {Config.IDColumn} = @versionID";
 
             await using (SqliteCommand command = new(editCommand, connection))
             {
                 command.Parameters.Add("@downloads_count", SqliteType.Text).Value = newCount.ToString();
+                command.Parameters.Add("@versionID", SqliteType.Text).Value = versionID;
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -187,7 +193,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 
             string editCommand = $"update main " +
                                  $"set {Config.IDColumn} = @id, {Config.WindowsPathColumn} = @win_path, {Config.LinuxPathColumn} = @linux_path, {Config.NameColumn} = @name, {Config.TagColumn} = @tag, {Config.ChangelogColumn} = @changelog, {Config.ReleaseDateColumn} = @release_date " +
-                                 $"where {Config.IDColumn} = '{versionID}'";
+                                 $"where {Config.IDColumn} = @where_id";
 
             await using (SqliteCommand command = new(editCommand, connection))
             {
@@ -198,6 +204,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
                 command.Parameters.Add("@tag",          SqliteType.Text).Value = info.PublicInfo.Tag;
                 command.Parameters.Add("@changelog",    SqliteType.Text).Value = info.PublicInfo.Changelog;
                 command.Parameters.Add("@release_date", SqliteType.Text).Value = info.PublicInfo.ReleaseDate;
+                command.Parameters.Add("@where_id",     SqliteType.Text).Value = versionID;
 
                 await command.ExecuteNonQueryAsync();                
             }
@@ -210,8 +217,9 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new($"delete from main where {Config.IDColumn} = '{id}'", connection))
+            await using (SqliteCommand command = new("DELETE FROM main WHERE id = @id", connection))
             {
+                command.Parameters.AddWithValue("@id", id);
                 await command.ExecuteNonQueryAsync();
             }
         }

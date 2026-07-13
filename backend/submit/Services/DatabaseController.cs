@@ -35,8 +35,9 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new SqliteCommand($"SELECT EXISTS(SELECT 1 FROM main WHERE id = '{id}')", connection))
+            await using (SqliteCommand command = new SqliteCommand("SELECT EXISTS(SELECT 1 FROM main WHERE id = @id)", connection))
             {
+                command.Parameters.AddWithValue("@id", id);
                 object? result = await command.ExecuteScalarAsync();
                 int count = Convert.ToInt32(result);
 
@@ -51,8 +52,9 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new SqliteCommand($"SELECT * FROM main WHERE id = '{id}'", connection))
+            await using (SqliteCommand command = new SqliteCommand("SELECT * FROM main WHERE id = @id", connection))
             {
+                command.Parameters.AddWithValue("@id", id);
                 await using (SqliteDataReader reader = await command.ExecuteReaderAsync())
                 {
                     bool valid = await reader.ReadAsync();
@@ -106,7 +108,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
 
             string editCommand = $"update main " +
                                  $"set {Config.IDColumn} = @id, {Config.StatusColumn} = @status, {Config.NameColumn} = @name, {Config.ContactColumn} = @contact, {Config.LinkColumn} = @link, {Config.AdditionalInfoColumn} = @additionalInfo, {Config.DateColumn} = @date, {Config.ReviewLinkColumn} = @reviewLink" + 
-                                 $"where {Config.IDColumn} = '{info.ID}'";
+                                 $"where {Config.IDColumn} = @where_id";
 
             await using (SqliteCommand command = new(editCommand, connection))
             {
@@ -118,6 +120,7 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
                 command.Parameters.Add("@additionalInfo", SqliteType.Text).Value = info.AdditionalInfo;
                 command.Parameters.Add("@date",           SqliteType.Text).Value = info.Date;
                 command.Parameters.Add("@reviewLink",      SqliteType.Text).Value = info.ReviewLink;
+                command.Parameters.Add("@where_id",        SqliteType.Text).Value = info.ID;
 
                 await command.ExecuteNonQueryAsync();                
             }
@@ -158,8 +161,9 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         {
             await connection.OpenAsync();
 
-            await using (SqliteCommand command = new($"delete from main where {Config.IDColumn} = '{id}'", connection))
+            await using (SqliteCommand command = new("DELETE FROM main WHERE id = @id", connection))
             {
+                command.Parameters.AddWithValue("@id", id);
                 await command.ExecuteNonQueryAsync();
             }
         }
@@ -174,11 +178,13 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
             await connection.OpenAsync();
 
             string editCommand = $"update main " +
-                                 $"set {Config.StatusColumn} = '{PublicSubmit.PENDING_STATUS}'" +
-                                 $"where {Config.IDColumn} = '{subid}'";
+                                 $"set {Config.StatusColumn} = @status " +
+                                 $"where {Config.IDColumn} = @subid";
 
             await using (SqliteCommand command = new(editCommand, connection))
             {
+                command.Parameters.AddWithValue("@status", PublicSubmit.PENDING_STATUS);
+                command.Parameters.AddWithValue("@subid",  subid);
                 await command.ExecuteNonQueryAsync();                
             }
         }
@@ -193,11 +199,14 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
             await connection.OpenAsync();
 
             string editCommand = $"update main " +
-                                 $"set {Config.StatusColumn} = '{PublicSubmit.REVIEWED_STATUS}', {Config.ReviewLinkColumn} = '{link}'" +
-                                 $"where {Config.IDColumn} = '{subid}'";
+                                 $"set {Config.StatusColumn} = @status, {Config.ReviewLinkColumn} = @link " +
+                                 $"where {Config.IDColumn} = @subid";
 
             await using (SqliteCommand command = new(editCommand, connection))
             {
+                command.Parameters.AddWithValue("@status", PublicSubmit.REVIEWED_STATUS);
+                command.Parameters.AddWithValue("@link",   link);
+                command.Parameters.AddWithValue("@subid",  subid);
                 await command.ExecuteNonQueryAsync();                
             }
         }
