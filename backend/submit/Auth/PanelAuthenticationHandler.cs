@@ -1,3 +1,4 @@
+using Submit;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -10,8 +11,10 @@ namespace Auth;
 public class PanelAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     private readonly IConfig Config;
+    private readonly IDatabaseReader Reader;
     
     public PanelAuthenticationHandler(
+	    IDatabaseReader reader,
 	    IConfig config,
         IOptionsMonitor<AuthenticationSchemeOptions> options, 
         ILoggerFactory logger, 
@@ -19,24 +22,8 @@ public class PanelAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         ISystemClock clock) 
         : base(options, logger, encoder, clock)
     {
+	    Reader = reader;
         Config = config;
-    }
-
-    private async Task<bool> Validate(string username, string password)
-    {
-        await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.UsersDatabasePath}"))
-        {
-            await connection.OpenAsync();
-            await using (SqliteCommand command = new SqliteCommand("SELECT * FROM users WHERE username = @username AND password = @password", connection))
-            {
-                command.Parameters.AddWithValue("@username", username);
-                command.Parameters.AddWithValue("@password", password);
-                await using (SqliteDataReader reader = await command.ExecuteReaderAsync())
-                {
-                    return await reader.ReadAsync();
-                }
-            }
-        }
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -73,7 +60,7 @@ public class PanelAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         var username = credentials[0];
         var password = credentials[1];
 
-		bool valid = await Validate(username, password);
+		bool valid = await Reader.ValidateUser(username, password);
 	
 		if(valid)
 		{

@@ -28,7 +28,23 @@ public sealed class DatabaseController : IDatabaseReader, IDatabaseWriter
         Config = config;
         Logger = logger;
     }
-
+    
+    public async Task<bool> ValidateUser(string username, string password)
+    {
+        await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.UsersDatabasePath}"))
+        {
+            await connection.OpenAsync();
+            await using (SqliteCommand command = new SqliteCommand("SELECT * FROM users WHERE username = @username AND password = @password", connection))
+            {
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", password);
+                await using (SqliteDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    return await reader.ReadAsync();
+                }
+            }
+        }
+    }
     public async Task<bool> HasSubmission(string id)
     {
         await using (SqliteConnection connection = new SqliteConnection($"Data Source={Config.DatabasePath}"))
