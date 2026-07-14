@@ -67,7 +67,7 @@ public sealed class SubmissionsController : ControllerBase
     
     
     [HttpGet("submissions_unverified_count")]
-    [ResponseCache(Duration = 60)]
+	[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> GetUnverifiedSubmissionsCount()
     {
         try
@@ -93,7 +93,7 @@ public sealed class SubmissionsController : ControllerBase
     }
     
     [HttpGet("submissions")]
-    [ResponseCache(Duration = 60)]
+	[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> GetAllSubmissions()
     {
         try
@@ -119,6 +119,7 @@ public sealed class SubmissionsController : ControllerBase
     }
 
     [HttpGet("submissions/{subid}")]
+	[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> GetSubmission(string subid)
     {
         try
