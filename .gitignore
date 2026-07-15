@@ -1,14 +1,16 @@
 #build stuff
 /backend/launcher/obj
 /backend/launcher/bin
+/backend/submit/obj
+/backend/submit/bin
 
 #dotnet configs
 /backend/launcher/Properties
+/backend/submit/Properties
 
 #data
 /data/
 
 #ide
 /launcher/.idea
-/backend/submit/bin
-/backend/submit/obj
+/submit/.idea
