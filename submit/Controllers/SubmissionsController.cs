@@ -129,7 +129,7 @@ public sealed class SubmissionsController : ControllerBase
                 return BadRequest($"No submission with {subid} ID");
             }
 
-            return Ok(await Reader.Read(subid));
+            return Ok(await Reader.Read(subid) as PublicSubmit);
         }
         catch (Exception e)
         {
