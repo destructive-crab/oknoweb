@@ -125,11 +125,10 @@ public sealed class SubmissionsController : ControllerBase
                 return BadRequest($"No submission with {subid} ID");
             }
 
-            PublicSubmit submit = await Reader.Read(subid);
-            
+            PublicSubmit submit = await Reader.Read(subid) as PublicSubmit;
             if (submit.Status != PublicSubmit.UNVERIFIED_STATUS)
             {
-                return Ok<PublicSubmit>(submit);
+                return Ok(submit);
             }
             else
             {
