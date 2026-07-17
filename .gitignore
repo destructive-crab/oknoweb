@@ -1,12 +1,12 @@
 #build stuff
-/backend/launcher/obj
-/backend/launcher/bin
-/backend/submit/obj
-/backend/submit/bin
+/launcher/obj
+/launcher/bin
+/submit/obj
+/submit/bin
 
 #dotnet configs
-/backend/launcher/Properties
-/backend/submit/Properties
+/launcher/Properties
+/submit/Properties
 
 #data
 /data/

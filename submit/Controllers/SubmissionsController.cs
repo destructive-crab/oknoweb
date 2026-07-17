@@ -40,7 +40,6 @@ public sealed class SubmissionsController : ControllerBase
     }
 
     [HttpGet("submissions_verified_count")]
-    [ResponseCache(Duration = 60)]
     public async Task<IActionResult> GetVerifiedSubmissionsCount()
     {
         try
@@ -67,7 +66,6 @@ public sealed class SubmissionsController : ControllerBase
     
     
     [HttpGet("submissions_unverified_count")]
-	[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> GetUnverifiedSubmissionsCount()
     {
         try
@@ -93,7 +91,6 @@ public sealed class SubmissionsController : ControllerBase
     }
     
     [HttpGet("submissions")]
-	[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> GetAllSubmissions()
     {
         try
@@ -119,7 +116,6 @@ public sealed class SubmissionsController : ControllerBase
     }
 
     [HttpGet("submissions/{subid}")]
-	[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> GetSubmission(string subid)
     {
         try
@@ -129,7 +125,15 @@ public sealed class SubmissionsController : ControllerBase
                 return BadRequest($"No submission with {subid} ID");
             }
 
-            return Ok(await Reader.Read(subid) as PublicSubmit);
+            PublicSubmit submit = await Reader.Read(subid) as PublicSubmit;
+            if (submit.Status != PublicSubmit.UNVERIFIED_STATUS)
+            {
+                return Ok(submit);
+            }
+            else
+            {
+                return BadRequest($"No submission with {subid} ID");
+            }
         }
         catch (Exception e)
         {
@@ -139,7 +143,6 @@ public sealed class SubmissionsController : ControllerBase
     }
 
     //admin
-
     [Authorize]
     [HttpGet("panel/login")]
     public async Task<IActionResult> Login()
