@@ -1,6 +1,7 @@
 using Debug;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Submit;
 
@@ -125,10 +126,10 @@ public sealed class SubmissionsController : ControllerBase
                 return BadRequest($"No submission with {subid} ID");
             }
 
-            PublicSubmit submit = await Reader.Read(subid) as PublicSubmit;
+            PublicSubmit submit = await Reader.Read(subid);
             if (submit.Status != PublicSubmit.UNVERIFIED_STATUS)
             {
-                return Ok(submit);
+                return Ok<PublicSubmit>(submit);
             }
             else
             {
